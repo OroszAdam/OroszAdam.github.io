@@ -12,5 +12,7 @@
     "three": "^0.148.0",
     "vite": "^4.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "events": "^3.3.0"
+  }
 }
