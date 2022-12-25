@@ -9,6 +9,7 @@ import Camera from "./Camera.js";
 import Renderer from "./Renderer";
 
 import World from "./World/World.js";
+import Controls from "./World/Controls";
 
 export default class Experience {
   static instance;
@@ -24,6 +25,7 @@ export default class Experience {
     this.camera = new Camera();
     this.renderer = new Renderer();
 
+    this.controls = new Controls();
     this.resources = new Resources(assets);
 
     this.world = new World();
@@ -41,6 +43,7 @@ export default class Experience {
   }
   update() {
     this.camera.update();
+    this.controls.update();
     this.renderer.update();
   }
 }

@@ -3,6 +3,7 @@ import * as THREE from "three";
 import Experience from "../Experience";
 
 import Room from "./Room.js";
+import Controls from "./Controls";
 import Environment from "./Environment";
 
 export default class World {
@@ -17,9 +18,17 @@ export default class World {
     this.resources.on("ready", () => {
       this.environment = new Environment();
       this.room = new Room();
+      this.controls = new Controls();
     });
   }
 
   resize() {}
-  update() {}
+  update() {
+    if (this.room) {
+      this.room.update();
+    }
+    if (this.control) {
+      this.controls.update();
+    }
+  }
 }

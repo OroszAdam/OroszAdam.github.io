@@ -10,7 +10,7 @@ export default class Room {
     this.room = this.resources.items.room;
     this.actualRoom = this.room.scene;
 
-    console.log(this.actualRoom.children);
+    // console.log(this.actualRoom.children);
     this.setModel();
   }
 
@@ -28,7 +28,7 @@ export default class Room {
         child.material = new THREE.MeshBasicMaterial({
           map: this.resources.items.screen,
         });
-        console.log(child.material);
+        // console.log(child.material);
       }
     });
 
