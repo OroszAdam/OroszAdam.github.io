@@ -45,5 +45,6 @@ export default class Experience {
     this.camera.update();
     this.controls.update();
     this.renderer.update();
+    this.world.update();
   }
 }
