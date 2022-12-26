@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Color } from "three";
 
 import Experience from "../Experience.js";
 
@@ -12,7 +13,7 @@ export default class Floor {
   setFloor() {
     this.geometry = new THREE.PlaneGeometry(100, 100);
     this.material = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
+      color: new THREE.Color("rgb(240, 180, 150)"),
       // set the texture side
       side: THREE.BackSide,
     });

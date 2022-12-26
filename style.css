@@ -8,7 +8,15 @@
 html,
 body {
   font-family: "M PLUS Rounded 1c", sans-serif;
+  color: var(--text-black);
 }
+
+:root {
+  --text-black: rgb(43, 41, 41);
+  --primary-color: rgb(238, 226, 237);
+  --primary-pink: rgb(228, 171, 206);
+}
+
 /* Experience ---------------------------------*/
 .experience {
   position: fixed;
@@ -31,6 +39,96 @@ body {
   position: relative;
 }
 
+/* Section Formatting ----------------------------*/
+.section-margin {
+  height: 3000px;
+  width: 100%;
+}
+
+.section {
+  width: 40%;
+  padding: 1000px 4%;
+  margin: 0;
+  background-color: var(--primary-color);
+}
+
+.left {
+  margin-right: auto;
+}
+.right {
+  margin-left: auto;
+}
+
+.section-intro-wrapper {
+  position: relative;
+  padding: 20% 5%;
+  border-bottom: 2px solid var(--primary-pink);
+  padding-bottom: 400px;
+}
+.section-detail-wrapper {
+  position: relative;
+  padding: 20% 5%;
+}
+
+.section-heading {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.8;
+  margin-top: 64px;
+}
+
+.section-text {
+  line-height: 2;
+  margin-top: 18px;
+  font-size: 16px;
+}
+
+/* Fancy Decoration Part of Section */
+.section-title {
+  position: relative;
+  color: var(--primary-pink);
+}
+.section-title-text {
+  display: block;
+  font-size: 40px;
+  font-weight: 500;
+  transform-origin: left;
+  transform: skewY(25deg);
+  z-index: 5;
+  text-transform: uppercase;
+}
+
+.styleOne,
+.styleTwo,
+.styleThree {
+  position: absolute;
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: 60px;
+  border: 1px solid var(--primary-pink);
+  transform-origin: left;
+  transform: skewY(-25deg);
+}
+.styleOne {
+  top: 0px;
+}
+.styleTwo {
+  top: 80px;
+}
+.styleThree {
+  top: 80px;
+  transform: skewY(25deg);
+  background-color: var(--primary-pink);
+}
+
+.section-number {
+  position: absolute;
+  bottom: 15px;
+  right: 0;
+  color: var(--primary-pink);
+  font-size: 24px;
+}
 /* Hero section ---------------------------------*/
 
 .hero {
