@@ -1,7 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;300;400;500;700&display=swap");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: "M PLUS Rounded 1c", sans-serif;
 }
 /* Experience ---------------------------------*/
 .experience {
@@ -36,9 +42,28 @@
   height: 100%;
   width: calc(100% - 160px);
   margin: 0 auto;
+  max-width: 1300px;
+  min-width: 600px;
 }
 
 .hero-main {
   position: absolute;
-  bottom: 125px;
+  bottom: 75px;
+  left: 0;
+}
+
+.hero-second {
+  position: absolute;
+  top: 20%;
+  right: 0;
+}
+
+.hero-main-title {
+  font-size: 64px;
+}
+.hero-main-description {
+  font-size: 18px;
+}
+.hero-second-subheading {
+  font-size: 24px;
 }
