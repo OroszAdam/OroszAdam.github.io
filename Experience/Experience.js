@@ -27,7 +27,6 @@ export default class Experience {
 
     this.controls = new Controls();
     this.resources = new Resources(assets);
-
     this.world = new World();
 
     this.sizes.on("resize", () => {
