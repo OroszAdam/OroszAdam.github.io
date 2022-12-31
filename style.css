@@ -15,6 +15,7 @@ body {
   --text-black: rgb(43, 41, 41);
   --primary-color: rgb(238, 226, 237);
   --primary-pink: rgb(228, 171, 206);
+  --primary-blue: rgb(84, 138, 255);
 }
 
 /* Experience ---------------------------------*/
@@ -37,6 +38,58 @@ body {
 }
 .page-wrapper {
   position: relative;
+}
+/* Togglebar ---------------------------------*/
+
+.toggle-bar {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  top: 48px;
+  right: 48px;
+  z-index: 999999999;
+}
+.sun-wrapper,
+.moon-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.toggle-button {
+  cursor: pointer;
+  position: relative;
+  width: 56px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-blue);
+  border-radius: 999px;
+  margin: 0px 16px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.toggle-circle {
+  position: absolute;
+  left: 6px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: var(--primary-color);
+  transition: all 0.2s ease-in-out;
+}
+.toggle-button:hover .toggle-circle {
+  transform: scale(0.8);
+}
+
+.slide {
+  left: 28px;
 }
 
 /* Section Formatting ----------------------------*/
