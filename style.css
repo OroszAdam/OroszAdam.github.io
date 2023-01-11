@@ -13,9 +13,13 @@ body {
 
 :root {
   --text-black: rgb(43, 41, 41);
-  --primary-color: rgb(238, 226, 237);
+  --primary-color: rgb(134, 95, 131);
   --primary-pink: rgb(228, 171, 206);
-  --primary-blue: rgb(84, 138, 255);
+  --primary-seaBlue: #00a7d9;
+  --primary-navyBlue: #05445e;
+  --primary-blueGrotto: #189ab4;
+  --primary-blueGreen: #75e6da;
+  --primary-babyBlue: #d4f1f4;
 }
 
 /* Experience ---------------------------------*/
@@ -66,7 +70,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--primary-blue);
+  background-color: var(--primary-babyBlue);
   border-radius: 999px;
   margin: 0px 16px;
   border: none;
@@ -81,7 +85,7 @@ body {
   border-radius: 50%;
   width: 20px;
   height: 20px;
-  background-color: var(--primary-color);
+  background-color: var(--primary-navyBlue);
   transition: all 0.2s ease-in-out;
 }
 .toggle-button:hover .toggle-circle {
@@ -102,7 +106,7 @@ body {
   width: 40%;
   padding: 1000px 4%;
   margin: 0;
-  background-color: var(--primary-color);
+  background-color: var(--primary-babyBlue);
 }
 
 .left {
@@ -115,7 +119,7 @@ body {
 .section-intro-wrapper {
   position: relative;
   padding: 20% 5%;
-  border-bottom: 2px solid var(--primary-pink);
+  border-bottom: 2px solid var(--primary-navyBlue);
   padding-bottom: 400px;
 }
 .section-detail-wrapper {
@@ -139,7 +143,7 @@ body {
 /* Fancy Decoration Part of Section */
 .section-title {
   position: relative;
-  color: var(--primary-pink);
+  color: var(--primary-navyBlue);
 }
 .section-title-text {
   display: block;
@@ -159,7 +163,7 @@ body {
   width: 100%;
   max-width: 280px;
   height: 60px;
-  border: 1px solid var(--primary-pink);
+  border: 1px solid var(--primary-navyBlue);
   transform-origin: left;
   transform: skewY(-25deg);
 }
@@ -172,14 +176,14 @@ body {
 .styleThree {
   top: 80px;
   transform: skewY(25deg);
-  background-color: var(--primary-pink);
+  background-color: var(--primary-navyBlue);
 }
 
 .section-number {
   position: absolute;
   bottom: 15px;
   right: 0;
-  color: var(--primary-pink);
+  color: var(--primary-navyBlue);
   font-size: 24px;
 }
 /* Hero section ---------------------------------*/
