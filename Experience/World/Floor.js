@@ -2,7 +2,8 @@ import * as THREE from "three";
 import { Color } from "three";
 
 import Experience from "../Experience.js";
-import { Water } from "three/addons/objects/Water.js";
+import waterFragmentShader from "../Shaders/water/fragmentShader.glsl";
+import waterVertexShader from "../Shaders/water/vertexShader.glsl";
 
 export default class Floor {
   constructor() {
@@ -12,6 +13,8 @@ export default class Floor {
     this.camera = this.experience.camera;
     this.scene = this.experience.scene;
     this.light = this.experience.world.environment.sunLight;
+
+    this.resources = this.experience.resources;
     this.setFloor();
   }
   setFloor() {
@@ -44,51 +47,78 @@ export default class Floor {
     // mirrorMesh.rotation.x = -Math.PI * 0.5;
     // scene.add(mirrorMesh);
 
-    let g = new THREE.PlaneGeometry(50, 50, 15, 15);
-    g.rotateX(-Math.PI * 0.5);
-    let vertData = [];
-    let v3 = new THREE.Vector3(); // for re-use
-    for (let i = 0; i < g.attributes.position.count; i++) {
-      v3.fromBufferAttribute(g.attributes.position, i);
-      vertData.push({
-        initH: v3.y,
-        amplitude: THREE.MathUtils.randFloatSpread(2),
-        phase: THREE.MathUtils.randFloat(0, Math.PI),
-      });
-    }
-    let m = new THREE.MeshLambertMaterial({
-      color: "aqua",
+    this.waterGeometry = new THREE.PlaneGeometry(100, 100);
+    this.waterMaterial = new THREE.ShaderMaterial({
+      vertexShader: waterVertexShader,
+      fragmentShader: waterFragmentShader,
     });
-    let o = new THREE.Mesh(g, m);
-    this.scene.add(o);
+    // const water = new Water(waterGeometry, {
+    //   textureWidth: 50,
+    //   textureHeight: 50,
+    //   waterNormals: new THREE.TextureLoader().load(
+    //     "textures/texture1.jpg",
+    //     function (texture) {
+    //       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    //     }
+    //   ),
+    //   alpha: 1.0,
+    //   sunDirection: new THREE.Vector3(0, 0, 2),
+    //   sunColor: 0xffffff,
+    //   waterColor: 0x000c1e,
+    //   distortionScale: 3.7,
+    //   fog: this.scene.fog !== undefined,
+    // });
+    this.water = new THREE.Mesh(this.waterGeometry, this.waterMaterial);
+    this.water.rotation.x = -Math.PI / 2;
+    this.water.position.y = -1;
+    const water = new Water();
 
-    let clock = new THREE.Clock();
-
-    renderer.setAnimationLoop(() => {
-      let time = clock.getElapsedTime();
-
-      vertData.forEach((vd, idx) => {
-        let y = vd.initH + Math.sin(time + vd.phase) * vd.amplitude;
-        g.attributes.position.setY(idx, y);
-      });
-      g.attributes.position.needsUpdate = true;
-      g.computeVertexNormals();
-
-      renderer.render(scene, camera);
-    });
-
-    this.geometry = new THREE.PlaneGeometry(100, 100, 100, 100);
-    this.material = new THREE.MeshStandardMaterial({
-      color: new THREE.Color("#05445e"),
-      // set the texture side
-      side: THREE.BackSide,
-    });
-    this.plane = new THREE.Mesh(this.geometry, this.material);
-    this.scene.add(this.plane);
-    this.plane.rotation.x = Math.PI / 2;
-    this.plane.position.y = -0.7;
-    this.plane.receiveShadow = true;
+    this.scene.add(water);
+    // this.plane.position.y = -0.7;
+    // this.plane.receiveShadow = true;
   }
   resize() {}
   update() {}
+}
+class Water {
+  constructor() {
+    this.geometry = new THREE.PlaneBufferGeometry(2, 2, 200, 200);
+
+    const shadersPromises = [
+      loadFile("shaders/water/vertex.glsl"),
+      loadFile("shaders/water/fragment.glsl"),
+    ];
+
+    this.loaded = Promise.all(shadersPromises).then(
+      ([vertexShader, fragmentShader]) => {
+        this.material = new THREE.RawShaderMaterial({
+          uniforms: {
+            light: { value: light },
+            tiles: { value: tiles },
+            sky: { value: textureCube },
+            water: { value: null },
+            causticTex: { value: null },
+            underwater: { value: false },
+          },
+          vertexShader: vertexShader,
+          fragmentShader: fragmentShader,
+        });
+
+        this.mesh = new THREE.Mesh(this.geometry, this.material);
+      }
+    );
+  }
+
+  draw(renderer, waterTexture, causticsTexture) {
+    this.material.uniforms["water"].value = waterTexture;
+    this.material.uniforms["causticTex"].value = causticsTexture;
+
+    this.material.side = THREE.FrontSide;
+    this.material.uniforms["underwater"].value = true;
+    renderer.render(this.mesh, camera);
+
+    this.material.side = THREE.BackSide;
+    this.material.uniforms["underwater"].value = false;
+    renderer.render(this.mesh, camera);
+  }
 }
