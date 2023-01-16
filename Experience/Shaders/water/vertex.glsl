@@ -1,4 +1,4 @@
-const vertexShader = `uniform mat4 projectionMatrix;
+uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 uniform sampler2D water;
 
@@ -21,6 +21,4 @@ void main() {
   eye = vec3(dot(-offset, axis_x), dot(-offset, axis_y), dot(-offset, axis_z));
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-}`;
-
-export default vertexShader;
+}
