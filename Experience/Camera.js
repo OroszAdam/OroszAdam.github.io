@@ -3,6 +3,7 @@ import * as THREE from "three";
 import Experience from "./Experience";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
 
 export default class Camera {
   constructor() {
@@ -10,9 +11,10 @@ export default class Camera {
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
     this.canvas = this.experience.canvas;
-    this.createPerspectiveCamera();
+    // this.createPerspectiveCamera();
     this.createOrthographicCamera();
     //this.setOrbitControls();
+    this.setTrackballControls();
   }
 
   createPerspectiveCamera() {
@@ -59,6 +61,11 @@ export default class Camera {
     this.controls = new OrbitControls(this.orthographicCamera, this.canvas);
     this.controls.enableDamping = true;
     this.controls.enableZoom = true;
+  }
+  setTrackballControls() {
+    this.controls = new TrackballControls(this.orthographicCamera, this.canvas);
+    this.controls.screen.width = this.canvas.width;
+    this.controls.screen.height = this.canvas.height;
   }
 
   resize() {
