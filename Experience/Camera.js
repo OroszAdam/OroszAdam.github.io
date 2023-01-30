@@ -11,7 +11,7 @@ export default class Camera {
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
     this.canvas = this.experience.canvas;
-    // this.createPerspectiveCamera();
+    this.createPerspectiveCamera();
     this.createOrthographicCamera();
     this.setOrbitControls();
     // this.setTrackballControls();
@@ -58,7 +58,7 @@ export default class Camera {
   }
 
   setOrbitControls() {
-    this.controls = new OrbitControls(this.orthographicCamera, document.body);
+    this.controls = new OrbitControls(this.perspectiveCamera, document.body);
     this.controls.enableDamping = true;
     this.controls.enableZoom = true;
   }

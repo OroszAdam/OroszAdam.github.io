@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import Experience from "../Experience.js";
 import { Water } from "three/addons/objects/Water2.js";
+import { Vector3 } from "three";
 
 export default class Floor {
   constructor() {
@@ -17,52 +18,68 @@ export default class Floor {
     this.setWater();
   }
   setWater() {
-    const groundGeometry = new THREE.PlaneGeometry(20, 20);
+    const groundGeometry = new THREE.PlaneGeometry(50, 50);
     const groundMaterial = new THREE.MeshStandardMaterial({
-      roughness: 0.8,
-      metalness: 0.4,
+      roughness: 0.7,
+      metalness: 1.1,
     });
     const ground = new THREE.Mesh(groundGeometry, groundMaterial);
     ground.rotation.x = Math.PI * -0.5;
-    ground.position.y = -2;
+    ground.position.y = -0.5;
     this.scene.add(ground);
     const textureLoader = new THREE.TextureLoader();
-    textureLoader.load("textures/tiles.jpg", function (map) {
+    textureLoader.load("textures/sandy_ground.jpg", function (map) {
       map.wrapS = THREE.RepeatWrapping;
       map.wrapT = THREE.RepeatWrapping;
-      map.anisotropy = 16;
+      map.anisotropy = 8;
       map.repeat.set(4, 4);
+
       groundMaterial.map = map;
       groundMaterial.needsUpdate = true;
     });
-    new THREE.CubeTextureLoader().setPath("textures/skybox/").load(
-      // urls of images used in the cube texture
-      [
-        "Daylight Box_Back.bmp",
-        "Daylight Box_Back.bmp",
-        "Daylight Box_Back.bmp",
-        "Daylight Box_Back.bmp",
-        "Daylight Box_Back.bmp",
-        "Daylight Box_Back.bmp",
-      ],
-      // what to do when loading is over
-      (cubeTexture) => {
-        // Geometry
-        const geometry = new THREE.SphereGeometry(200, 0, 0);
-        // Material
-        const material = new THREE.MeshBasicMaterial({
-          // CUBE TEXTURE can be used with
-          // the environment map property of
-          // a material.
-          envMap: cubeTexture,
-        });
-        // Mesh
-        const mesh = new THREE.Mesh(geometry, material);
-        this.scene.add(mesh);
-        // CUBE TEXTURE is also an option for a background
-        this.scene.background = cubeTexture;
-      }
+
+    // setPath("textures/skybox/");
+    let materialArray = [];
+
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_ft.jpg"),
+      })
     );
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_bk.jpg"),
+      })
+    );
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_up.jpg"),
+      })
+    );
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_dn.jpg"),
+      })
+    );
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_rt.jpg"),
+      })
+    );
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_lf.jpg"),
+      })
+    );
+
+    for (let i = 0; i < 6; i++) materialArray[i].side = THREE.BackSide;
+
+    let skyboxSize = new Vector3(500, 500, 500);
+    let skyboxGeo = new THREE.BoxGeometry(50, 50, 50);
+    let skybox = new THREE.Mesh(skyboxGeo, materialArray);
+
+    skybox.position.y = 15;
+    this.scene.add(skybox);
 
     // water
     const params = {
