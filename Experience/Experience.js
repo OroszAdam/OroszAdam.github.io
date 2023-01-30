@@ -32,6 +32,7 @@ export default class Experience {
 
     this.theme = new Theme();
     this.world = new World();
+    this.clock = new THREE.Clock();
 
     this.sizes.on("resize", () => {
       this.resize();

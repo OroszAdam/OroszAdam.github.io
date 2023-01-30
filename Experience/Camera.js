@@ -13,8 +13,8 @@ export default class Camera {
     this.canvas = this.experience.canvas;
     // this.createPerspectiveCamera();
     this.createOrthographicCamera();
-    //this.setOrbitControls();
-    this.setTrackballControls();
+    this.setOrbitControls();
+    // this.setTrackballControls();
   }
 
   createPerspectiveCamera() {
@@ -58,15 +58,15 @@ export default class Camera {
   }
 
   setOrbitControls() {
-    this.controls = new OrbitControls(this.orthographicCamera, this.canvas);
+    this.controls = new OrbitControls(this.orthographicCamera, document.body);
     this.controls.enableDamping = true;
     this.controls.enableZoom = true;
   }
-  setTrackballControls() {
-    this.controls = new TrackballControls(this.orthographicCamera, this.canvas);
-    this.controls.screen.width = this.canvas.width;
-    this.controls.screen.height = this.canvas.height;
-  }
+  // setTrackballControls() {
+  //   this.controls = new TrackballControls(this.orthographicCamera, this.canvas);
+  //   this.controls.screen.width = this.canvas.width;
+  //   this.controls.screen.height = this.canvas.height;
+  // }
 
   resize() {
     // Updateing Perspective Camera on Resize
@@ -85,7 +85,7 @@ export default class Camera {
 
   update() {
     // For orbital controls:
-    //this.controls.update();
+    this.controls.update();
     // this.helper.matrixWorldNeedsUpdate = true;
     // this.helper.update();
     // this.helper.position.copy(this.orthographicCamera.position);
