@@ -25,9 +25,10 @@ export default class Camera {
       1000
     );
     this.scene.add(this.perspectiveCamera);
-    this.perspectiveCamera.position.x = 0;
-    this.perspectiveCamera.position.y = 8;
-    this.perspectiveCamera.position.z = 11;
+    this.perspectiveCamera.rotation.x = -0.7057;
+    this.perspectiveCamera.position.x = 0.15;
+    this.perspectiveCamera.position.y = 10;
+    this.perspectiveCamera.position.z = 11.6;
   }
   createOrthographicCamera() {
     this.orthographicCamera = new THREE.OrthographicCamera(
@@ -85,7 +86,7 @@ export default class Camera {
 
   update() {
     // For orbital controls:
-    this.controls.update();
+    // this.controls.update();
     // this.helper.matrixWorldNeedsUpdate = true;
     // this.helper.update();
     // this.helper.position.copy(this.orthographicCamera.position);

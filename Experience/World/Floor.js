@@ -2,6 +2,7 @@ import * as THREE from "three";
 import Experience from "../Experience.js";
 import { Water } from "three/addons/objects/Water2.js";
 import { Vector3 } from "three";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 export default class Floor {
   constructor() {
@@ -16,6 +17,7 @@ export default class Floor {
     this.controls = this.experience.controls;
 
     this.setWater();
+    this.update();
   }
   setWater() {
     const groundGeometry = new THREE.PlaneGeometry(50, 50);
@@ -74,26 +76,28 @@ export default class Floor {
 
     for (let i = 0; i < 6; i++) materialArray[i].side = THREE.BackSide;
 
-    let skyboxSize = new Vector3(500, 500, 500);
-    let skyboxGeo = new THREE.BoxGeometry(50, 50, 50);
+    let skyboxGeo = new THREE.BoxGeometry(2000, 2000, 2000);
     let skybox = new THREE.Mesh(skyboxGeo, materialArray);
 
     skybox.position.y = 15;
     this.scene.add(skybox);
 
     // water
-    const params = {
-      color: "#ffffff",
-      scale: 4,
-      flowX: 1,
-      flowY: 1,
+    this.waterParams = {
+      color: "#8FDCFF",
+      scale: 0.4,
+      flowX: 0.15,
+      flowY: 0.2,
     };
     const waterGeometry = new THREE.PlaneGeometry(50, 50);
 
     this.water = new Water(waterGeometry, {
-      color: params.color,
-      scale: params.scale,
-      flowDirection: new THREE.Vector2(params.flowX, params.flowY),
+      color: this.waterParams.color,
+      scale: this.waterParams.scale,
+      flowDirection: new THREE.Vector2(
+        this.waterParams.flowX,
+        this.waterParams.flowY
+      ),
       textureWidth: 1024,
       textureHeight: 1024,
     });
@@ -102,4 +106,5 @@ export default class Floor {
     this.water.rotation.x = -Math.PI / 2;
     this.scene.add(this.water);
   }
+  update() {}
 }
