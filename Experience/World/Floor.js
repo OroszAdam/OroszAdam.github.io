@@ -102,7 +102,7 @@ export default class Floor {
       textureHeight: 1024,
     });
 
-    // this.water.position.y = -1;
+    this.water.position.y = -0.3;
     this.water.rotation.x = -Math.PI / 2;
     this.scene.add(this.water);
   }
