@@ -37,7 +37,7 @@ export default class Environment {
     this.sunLight.shadow.camera.far = 20;
     this.sunLight.shadow.mapSize.set(2048, 2048);
     this.sunLight.shadow.normalBias = 0.05;
-    this.sunLight.position.set(1.5, 7, 3);
+    this.sunLight.position.set(5, 2.5, 3);
     this.scene.add(this.sunLight);
 
     this.ambientLight = new THREE.AmbientLight("#ffffff", 0.8);
@@ -56,10 +56,10 @@ export default class Environment {
         b: 0.39215686274509803,
       });
       GSAP.to(this.sunLight, {
-        intensity: 0.69,
+        intensity: 3,
       });
       GSAP.to(this.ambientLight, {
-        intensity: 0.69,
+        intensity: 0.8,
       });
     } else {
       GSAP.to(this.sunLight.color, {
@@ -73,10 +73,10 @@ export default class Environment {
         b: 1,
       });
       GSAP.to(this.sunLight, {
-        intensity: 1,
+        intensity: 3,
       });
       GSAP.to(this.ambientLight, {
-        intensity: 1,
+        intensity: 0.8,
       });
     }
   }

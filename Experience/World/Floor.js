@@ -1,8 +1,6 @@
 import * as THREE from "three";
 import Experience from "../Experience.js";
 import { Water } from "three/addons/objects/Water2.js";
-import { Vector3 } from "three";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 export default class Floor {
   constructor() {
@@ -82,7 +80,7 @@ export default class Floor {
     let skybox = new THREE.Mesh(skyboxGeo, materialArray);
 
     skybox.position.y = 15;
-    this.scene.add(skybox);
+    // this.scene.add(skybox);
 
     // water
     this.waterParams = {
@@ -91,7 +89,7 @@ export default class Floor {
       flowX: 0.15,
       flowY: 0.2,
     };
-    const waterGeometry = new THREE.PlaneGeometry(50, 50);
+    const waterGeometry = new THREE.PlaneGeometry(41, 20);
 
     this.water = new Water(waterGeometry, {
       color: this.waterParams.color,
@@ -104,7 +102,9 @@ export default class Floor {
       textureHeight: 1024,
     });
 
+    this.water.position.x = -5;
     this.water.position.y = -0.3;
+    this.water.position.z = -0.5;
     this.water.rotation.x = -Math.PI / 2;
     this.scene.add(this.water);
   }
