@@ -20,11 +20,11 @@ export default class Controls {
 
   setPath() {
     this.timeline = new GSAP.timeline();
-    this.timeline.to(this.room?.position, {
+    this.timeline.to(this.camera?.perspectiveCamera.position, {
       x:
         // put in a function to update
         () => {
-          return this.sizes.width * 0.0028;
+          return this.sizes.width * -0.002;
         },
       scrollTrigger: {
         trigger: ".first-move",

@@ -20,14 +20,16 @@ export default class Floor {
     this.update();
   }
   setWater() {
-    const groundGeometry = new THREE.PlaneGeometry(50, 50);
+    const groundGeometry = new THREE.PlaneGeometry(41, 20);
     const groundMaterial = new THREE.MeshStandardMaterial({
       roughness: 0.7,
       metalness: 1.1,
     });
     const ground = new THREE.Mesh(groundGeometry, groundMaterial);
     ground.rotation.x = Math.PI * -0.5;
+    ground.position.x = -5;
     ground.position.y = -0.5;
+    ground.position.z = -3;
     this.scene.add(ground);
     const textureLoader = new THREE.TextureLoader();
     textureLoader.load("textures/sandy_ground.jpg", function (map) {

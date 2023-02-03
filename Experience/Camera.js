@@ -25,7 +25,7 @@ export default class Camera {
       1000
     );
     this.scene.add(this.perspectiveCamera);
-    this.perspectiveCamera.rotation.x = -0.7057;
+    this.perspectiveCamera.rotation.x = -0.74;
     this.perspectiveCamera.position.x = 0.15;
     this.perspectiveCamera.position.y = 10;
     this.perspectiveCamera.position.z = 11.6;
