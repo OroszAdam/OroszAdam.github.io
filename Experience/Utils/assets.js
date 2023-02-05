@@ -9,4 +9,9 @@ export default [
     type: "videoTexture",
     path: "/textures/zyzz.mp4",
   },
+  {
+    name: "myself_on_screen",
+    type: "videoTexture",
+    path: "/textures/myself2.mp4",
+  },
 ];

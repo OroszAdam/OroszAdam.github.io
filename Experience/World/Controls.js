@@ -1,5 +1,3 @@
-import * as THREE from "three";
-
 import Experience from "../Experience.js";
 import GSAP from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger.js";
@@ -27,11 +25,11 @@ export default class Controls {
           return this.sizes.width * -0.002;
         },
       scrollTrigger: {
-        trigger: ".first-move",
-        markers: false,
+        trigger: ".page-wrapper",
+        markers: true,
         start: "top top",
-        end: "bottom bottom",
-        scrub: "0.5",
+        end: "+=100%",
+        scrub: true,
         // for updating x:
         invalidateOnRefresh: true,
       },
