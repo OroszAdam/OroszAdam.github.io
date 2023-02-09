@@ -12,6 +12,6 @@ export default [
   {
     name: "myself_on_screen",
     type: "videoTexture",
-    path: "/textures/myself2.mp4",
+    path: "/textures/myself.mp4",
   },
 ];
