@@ -18,13 +18,22 @@ export default class Resources extends EventEmitter {
     this.queue = this.assets.length;
     this.loaded = 0;
 
+    this.loadingManager = new THREE.LoadingManager();
+    this.loadingManager.onStart = function (url, item, total) {
+      console.log(`Started loading: ${url}`);
+    };
+    this.loadingManager.onProgress = function (url, loaded, total) {
+      console.log(`Loading: ${url}`);
+    };
+    this.loadingManager.onLoad = function () {
+      console.log(`Problem loading.`);
+    };
     this.setLoaders();
     this.startLoading();
   }
-
   setLoaders() {
     this.loaders = {};
-    this.loaders.gltfLoader = new GLTFLoader();
+    this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
     this.loaders.dracoLoader = new DRACOLoader();
     this.loaders.dracoLoader.setDecoderPath("/draco/");
     this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);

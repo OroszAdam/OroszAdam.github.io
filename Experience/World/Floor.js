@@ -85,7 +85,7 @@ export default class Floor {
     // water
     this.waterParams = {
       color: "#8FDCFF",
-      scale: 0.4,
+      scale: 0.1,
       flowX: 0.15,
       flowY: 0.2,
     };
@@ -103,7 +103,7 @@ export default class Floor {
     });
 
     this.water.position.x = -5;
-    this.water.position.y = -0.3;
+    this.water.position.y = -0.2;
     this.water.position.z = -0.5;
     this.water.rotation.x = -Math.PI / 2;
     this.scene.add(this.water);
