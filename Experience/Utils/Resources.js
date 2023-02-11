@@ -4,6 +4,7 @@ import EventEmitter from "events";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import Experience from "../Experience.js";
+import GSAP from "gsap";
 
 export default class Resources extends EventEmitter {
   constructor(assets) {
@@ -19,15 +20,50 @@ export default class Resources extends EventEmitter {
     this.loaded = 0;
 
     this.loadingManager = new THREE.LoadingManager();
+
     this.loadingManager.onStart = function (url, item, total) {
       console.log(`Started loading: ${url}`);
     };
+
+    const progressBar = document.querySelector(".circular-progress");
     this.loadingManager.onProgress = function (url, loaded, total) {
       console.log(`Loading: ${url}`);
+      progressBar.style.background = `conic-gradient(var(--primary-navyBlue) ${
+        (loaded / total) * 360
+      }deg, #ffffff ${(loaded / total) * 360 + 30}deg)`;
     };
+
+    const progressBarContainer = document.querySelector(
+      ".progress-bar-container"
+    );
+    const logo = document.querySelector(".logo_cococali");
+    const page = document.querySelector(".page");
+    const toggleDayNightBar = document.querySelector(".toggle-bar");
     this.loadingManager.onLoad = function () {
+      GSAP.timeline().to(
+        progressBarContainer,
+        { duration: 2, opacity: 0 },
+        0.5
+      );
+      GSAP.timeline().to(progressBar, { duration: 1.2, scale: 1.5 }, 0.5);
+      GSAP.timeline().to(toggleDayNightBar, { duration: 2, opacity: 1 }, 0.5);
+      GSAP.timeline().to(
+        logo,
+        {
+          onComplete: () => {
+            page.style.position = "inherit";
+          },
+          duration: 2,
+          scale: 1.5,
+        },
+        0.5
+      );
+      console.log(`Loaded.`);
+    };
+    this.loadingManager.onError = function () {
       console.log(`Problem loading.`);
     };
+
     this.setLoaders();
     this.startLoading();
   }
