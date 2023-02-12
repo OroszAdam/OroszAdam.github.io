@@ -26,6 +26,13 @@ export default class Resources extends EventEmitter {
     };
 
     const progressBar = document.querySelector(".circular-progress");
+    this.progressBarContainer = document.querySelector(
+      ".progress-bar-container"
+    );
+    this.logo = document.querySelector(".logo_cococali");
+    this.page = document.querySelector(".page");
+    this.toggleDayNightBar = document.querySelector(".toggle-bar");
+
     this.loadingManager.onProgress = function (url, loaded, total) {
       console.log(`Loading: ${url}`);
       progressBar.style.background = `conic-gradient(var(--primary-navyBlue) ${
@@ -33,39 +40,38 @@ export default class Resources extends EventEmitter {
       }deg, #ffffff ${(loaded / total) * 360 + 30}deg)`;
     };
 
-    const progressBarContainer = document.querySelector(
-      ".progress-bar-container"
-    );
-    const logo = document.querySelector(".logo_cococali");
-    const page = document.querySelector(".page");
-    const toggleDayNightBar = document.querySelector(".toggle-bar");
-    this.loadingManager.onLoad = function () {
-      GSAP.timeline().to(
-        progressBarContainer,
-        { duration: 2, opacity: 0 },
-        0.5
-      );
-      GSAP.timeline().to(progressBar, { duration: 1.2, scale: 1.5 }, 0.5);
-      GSAP.timeline().to(toggleDayNightBar, { duration: 2, opacity: 1 }, 0.5);
-      GSAP.timeline().to(
-        logo,
-        {
-          onComplete: () => {
-            page.style.position = "inherit";
-          },
-          duration: 2,
-          scale: 1.5,
-        },
-        0.5
-      );
-      console.log(`Loaded.`);
-    };
+    this.loadingManager.onLoad = this.finishLoading();
     this.loadingManager.onError = function () {
       console.log(`Problem loading.`);
     };
 
     this.setLoaders();
     this.startLoading();
+  }
+  finishLoading() {
+    GSAP.timeline().to(
+      this.progressBarContainer,
+      { duration: 2, opacity: 0 },
+      0.5
+    );
+    GSAP.timeline().to(this.progressBar, { duration: 1.2, scale: 1.5 }, 0.5);
+    GSAP.timeline().to(
+      this.toggleDayNightBar,
+      { duration: 2, opacity: 1 },
+      0.5
+    );
+    GSAP.timeline().to(
+      this.logo,
+      {
+        onComplete: () => {
+          this.page.style.position = "inherit";
+        },
+        duration: 2,
+        scale: 1.5,
+      },
+      0.5
+    );
+    console.log(`Loaded.`);
   }
   setLoaders() {
     this.loaders = {};
