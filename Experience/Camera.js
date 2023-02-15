@@ -4,6 +4,7 @@ import Experience from "./Experience";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls";
+import { Vector3 } from "three";
 
 export default class Camera {
   constructor() {
@@ -11,6 +12,7 @@ export default class Camera {
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
     this.canvas = this.experience.canvas;
+    this.initialCameraPosition = new THREE.Vector3(0.15, 10, 11.6);
     this.createPerspectiveCamera();
     this.createOrthographicCamera();
     // this.setOrbitControls();
@@ -26,9 +28,12 @@ export default class Camera {
     );
     this.scene.add(this.perspectiveCamera);
     this.perspectiveCamera.rotation.x = -0.74;
-    this.perspectiveCamera.position.x = 0.15;
-    this.perspectiveCamera.position.y = 10;
-    this.perspectiveCamera.position.z = 11.6;
+    this.perspectiveCamera.position.x = this.initialCameraPosition.x;
+    this.perspectiveCamera.position.y = this.initialCameraPosition.y;
+    this.perspectiveCamera.position.z = this.initialCameraPosition.z;
+    // this.perspectiveCamera.position.x = 0.15;
+    // this.perspectiveCamera.position.y = 10;
+    // this.perspectiveCamera.position.z = 11.6;
   }
   createOrthographicCamera() {
     this.orthographicCamera = new THREE.OrthographicCamera(
@@ -87,6 +92,8 @@ export default class Camera {
   update() {
     // For orbital controls:
     // this.controls.update();
+    // console.log(this.perspectiveCamera.position);
+    // console.log(this.perspectiveCamera.rotation);
     // this.helper.matrixWorldNeedsUpdate = true;
     // this.helper.update();
     // this.helper.position.copy(this.orthographicCamera.position);
