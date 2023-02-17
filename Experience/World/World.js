@@ -42,5 +42,8 @@ export default class World {
     if (this.control) {
       this.controls.update();
     }
+    if (this.floor) {
+      this.floor.update();
+    }
   }
 }

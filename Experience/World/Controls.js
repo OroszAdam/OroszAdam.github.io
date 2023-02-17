@@ -23,7 +23,7 @@ export default class Controls {
         this.firstMoveTimeline = new GSAP.timeline({
           scrollTrigger: {
             trigger: ".first-move",
-            markers: true,
+            markers: false,
             start: "top bottom",
             end: "bottom bottom",
             scrub: 0.6,
@@ -40,7 +40,7 @@ export default class Controls {
         this.secondMoveTimeline = new GSAP.timeline({
           scrollTrigger: {
             trigger: ".second-move",
-            markers: true,
+            markers: false,
             start: "top bottom",
             end: "bottom bottom",
             scrub: 0.6,
@@ -82,7 +82,7 @@ export default class Controls {
         this.thirdMoveTimeline = new GSAP.timeline({
           scrollTrigger: {
             trigger: ".third-move",
-            markers: true,
+            markers: false,
             start: "top bottom",
             end: "bottom bottom",
             scrub: 0.6,
@@ -142,7 +142,7 @@ export default class Controls {
         },
       scrollTrigger: {
         trigger: ".page-wrapper",
-        markers: true,
+        markers: false,
         start: "top top",
         end: "+=100%",
         scrub: true,

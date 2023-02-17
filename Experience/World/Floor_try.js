@@ -1,13 +1,9 @@
 import * as THREE from "three";
-import { loadFile } from "./functions.js";
 import Experience from "../Experience.js";
-import WaterSimulation from "./WaterSimulation";
-import Water from "./Water.js";
-import { EventDispatcher } from "three";
-import EventEmitter from "events";
-export default class Floor extends EventEmitter {
+import { Water } from "three/addons/objects/Water2.js";
+
+export default class Floor {
   constructor() {
-    super();
     this.experience = new Experience();
     this.scene = this.experience.scene;
     this.renderer = this.experience.renderer;
@@ -18,139 +14,99 @@ export default class Floor extends EventEmitter {
 
     this.controls = this.experience.controls;
 
-    this.setWater(
-      this.camera.orthographicCamera,
-      this.renderer,
-      this.experience.canvas,
-      this.controls
+    this.setWater();
+    this.update();
+  }
+  setWater() {
+    const groundGeometry = new THREE.PlaneGeometry(41, 20);
+    const groundMaterial = new THREE.MeshStandardMaterial({
+      roughness: 0.7,
+      metalness: 1.1,
+    });
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.rotation.x = Math.PI * -0.5;
+    ground.position.x = -5;
+    ground.position.y = -0.5;
+    ground.position.z = -3;
+    this.scene.add(ground);
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.load("textures/sandy_ground.jpg", function (map) {
+      map.wrapS = THREE.RepeatWrapping;
+      map.wrapT = THREE.RepeatWrapping;
+      map.anisotropy = 8;
+      map.repeat.set(4, 4);
+
+      groundMaterial.map = map;
+      groundMaterial.needsUpdate = true;
+    });
+
+    // setPath("textures/skybox/");
+    let materialArray = [];
+
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_ft.jpg"),
+      })
     );
-  }
-  setWater(camera, renderer, canvas, controls) {
-    // Shader chunks
-    loadFile("Experience/Shaders/utils.glsl").then((utils) => {
-      THREE.ShaderChunk["utils"] = utils;
-      // Ray caster
-      this.raycaster = new THREE.Raycaster();
-      this.mouse = new THREE.Vector2();
-      // Create mouse Controls
-      // const controls = new TrackballControls(camera, renderer);
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_bk.jpg"),
+      })
+    );
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_up.jpg"),
+      })
+    );
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_dn.jpg"),
+      })
+    );
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_rt.jpg"),
+      })
+    );
+    materialArray.push(
+      new THREE.MeshBasicMaterial({
+        map: new THREE.TextureLoader().load("textures/skybox/tropic_lf.jpg"),
+      })
+    );
 
-      // controls.screen.width = width;
-      // controls.screen.height = height;
+    for (let i = 0; i < 6; i++) materialArray[i].side = THREE.BackSide;
 
-      const targetgeometry = new THREE.PlaneGeometry(10, 10);
-      targetgeometry.attributes.position.array[2] =
-        -targetgeometry.attributes.position.array[1];
-      targetgeometry.attributes.position.array[1] = 0;
-      targetgeometry.attributes.position.array[5] =
-        -targetgeometry.attributes.position.array[4];
-      targetgeometry.attributes.position.array[4] = 0;
-      targetgeometry.attributes.position.array[8] =
-        -targetgeometry.attributes.position.array[7];
-      targetgeometry.attributes.position.array[7] = 0;
-      targetgeometry.attributes.position.array[11] =
-        -targetgeometry.attributes.position.array[10];
-      targetgeometry.attributes.position.array[10] = 0;
+    let skyboxGeo = new THREE.BoxGeometry(2000, 2000, 2000);
+    let skybox = new THREE.Mesh(skyboxGeo, materialArray);
 
-      this.water = new Water(camera, renderer, targetgeometry);
-      this.water.loaded.then(() => {
-        this.waterMeshFinal = new THREE.Mesh(
-          targetgeometry,
-          this.water.material
-        );
-        // this.waterMeshFinal.rotation.x = Math.PI / 2;
-        // this.waterMeshFinal.position.y = -1;
-        this.scene.add(this.waterMeshFinal);
-      });
-      this.waterSimulation = new WaterSimulation(
-        camera,
-        renderer,
-        targetgeometry
-      );
-      const loaded = [this.waterSimulation.loaded, this.water.loaded];
+    skybox.position.y = 15;
+    // this.scene.add(skybox);
 
-      Promise.all(loaded).then(() => {
-        // canvas.addEventListener("mousemove", { handleEvent: onMouseMove });
-        this.onMouseMove();
-        // for (var i = 0; i < 20; i++) {
-        //   this.waterSimulation.addDrop(
-        //     renderer,
-        //     Math.random() * 2 - 1,
-        //     Math.random() * 2 - 1,
-        //     0.03,
-        //     i & 1 ? 0.02 : -0.02
-        //   );
-        // }
+    // water
+    this.waterParams = {
+      color: "#8FDCFF",
+      scale: 0.1,
+      flowX: 0.15,
+      flowY: 0.2,
+    };
+    const waterGeometry = new THREE.PlaneGeometry(41, 20);
 
-        this.animate();
-      });
-      // function onMouseMove(event) {
-      //   const rect = canvas.getBoundingClientRect();
-
-      //   mouse.x = ((event.clientX - rect.left) * 2) / width - 1;
-      //   mouse.y = (-(event.clientY - rect.top) * 2) / height + 1;
-
-      //   raycaster.setFromCamera(mouse, camera);
-
-      //   const intersects = raycaster.intersectObject(targetmesh);
-
-      //   for (let intersect of intersects) {
-      //     waterSimulation.addDrop(
-      //       renderer,
-      //       intersect.point.x,
-      //       intersect.point.z,
-      //       0.03,
-      //       0.04
-      //     );
-      //   }
-      //   console.log(event);
-      // }
+    this.water = new Water(waterGeometry, {
+      color: this.waterParams.color,
+      scale: this.waterParams.scale,
+      flowDirection: new THREE.Vector2(
+        this.waterParams.flowX,
+        this.waterParams.flowY
+      ),
+      textureWidth: 1024,
+      textureHeight: 1024,
     });
+
+    this.water.position.x = -5;
+    this.water.position.y = -0.2;
+    this.water.position.z = -0.5;
+    this.water.rotation.x = -Math.PI / 2;
+    this.scene.add(this.water);
   }
-  onMouseMove() {
-    window.addEventListener("mousemove", (e) => {
-      const rect = this.experience.canvas.getBoundingClientRect();
-
-      this.mouse.x =
-        ((e.clientX - rect.left) * 2) / this.experience.canvas.width - 1;
-      this.mouse.y =
-        (-(e.clientY - rect.top) * 2) / this.experience.canvas.height + 1;
-
-      this.raycaster.setFromCamera(this.mouse, this.camera.orthographicCamera);
-
-      // this.raycaster.set(this.mouse, this.camera.position);
-      const intersects = this.raycaster.intersectObject(this.waterMeshFinal);
-
-      for (let intersect of intersects) {
-        this.waterSimulation.addDrop(
-          intersect.point.x,
-          intersect.point.z,
-          0.03,
-          0.04
-        );
-      }
-    });
-  }
-  // Main rendering loop
-  animate() {
-    console.log(this.waterSimulation);
-
-    this.waterSimulation.stepSimulation(this.renderer);
-    this.waterSimulation.updateNormals(this.renderer);
-
-    const waterTexture = this.waterSimulation.texture.texture;
-
-    // debug.draw(renderer, causticsTexture);
-
-    this.renderer.renderer.setRenderTarget(null);
-    this.renderer.renderer.setClearColor("white", 1);
-    this.renderer.renderer.clear();
-    this.water.draw(this.renderer, waterTexture);
-
-    this.controls.update();
-
-    window.requestAnimationFrame(this.animate);
-  }
-  resize() {}
   update() {}
 }
