@@ -63,7 +63,6 @@ export default class Controls {
 
   // onWheel() {
   //   window.addEventListener("wheel", (e) => {
-  //     console.log(e);
   //     if (e.deltaY > 0) {
   //       this.lerp.target += 0.01;
   //       // this.back = false;

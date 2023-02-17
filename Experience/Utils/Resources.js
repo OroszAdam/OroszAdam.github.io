@@ -21,9 +21,7 @@ export default class Resources extends EventEmitter {
 
     this.loadingManager = new THREE.LoadingManager();
 
-    this.loadingManager.onStart = function (url, item, total) {
-      console.log(`Started loading: ${url}`);
-    };
+    this.loadingManager.onStart = function (url, item, total) {};
 
     const progressBar = document.querySelector(".circular-progress");
     this.progressBarContainer = document.querySelector(
@@ -34,16 +32,13 @@ export default class Resources extends EventEmitter {
     this.toggleDayNightBar = document.querySelector(".toggle-bar");
 
     this.loadingManager.onProgress = function (url, loaded, total) {
-      console.log(`Loading: ${url}`);
       progressBar.style.background = `conic-gradient(var(--primary-navyBlue) ${
         (loaded / total) * 360
       }deg, #ffffff ${(loaded / total) * 360 + 30}deg)`;
     };
 
     this.loadingManager.onLoad = this.finishLoading();
-    this.loadingManager.onError = function () {
-      console.log(`Problem loading.`);
-    };
+    this.loadingManager.onError = function () {};
 
     this.setLoaders();
     this.startLoading();
@@ -71,7 +66,6 @@ export default class Resources extends EventEmitter {
       },
       0.5
     );
-    console.log(`Loaded.`);
   }
   setLoaders() {
     this.loaders = {};

@@ -92,8 +92,6 @@ export default class Camera {
   update() {
     // For orbital controls:
     // this.controls.update();
-    // console.log(this.perspectiveCamera.position);
-    // console.log(this.perspectiveCamera.rotation);
     // this.helper.matrixWorldNeedsUpdate = true;
     // this.helper.update();
     // this.helper.position.copy(this.orthographicCamera.position);

@@ -28,7 +28,6 @@ export default class Room {
     //   value: 0,
     // };
 
-    // console.log(this.actualRoom.children);
     this.setModel();
     // this.onMouseMove();
     // this.setGUI();

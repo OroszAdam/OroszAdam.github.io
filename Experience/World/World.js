@@ -34,7 +34,11 @@ export default class World {
       this.environment.switchTheme(theme);
     }
   }
-  resize() {}
+  resize() {
+    if (this.floor) {
+      this.floor.resize();
+    }
+  }
   update() {
     if (this.room) {
       this.room.update();

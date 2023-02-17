@@ -245,11 +245,13 @@ body {
 
 .hero-main-title {
   font-size: 76px;
-  color: var(--primary-babyBlue);
+  color: var(--primary-navyBlue);
+  text-shadow: var(--primary-navyBlue) 1px 0 5px;
 }
 .hero-main-description {
   font-size: 24px;
-  color: var(--primary-babyBlue);
+  color: var(--primary-navyBlue);
+  text-shadow: var(--primary-navyBlue) 1px 0 5px;
 }
 .hero-second-subheading {
   font-size: 24px;

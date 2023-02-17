@@ -124,9 +124,7 @@ export default class Controls {
         );
       },
       // Mobile
-      "(max-width: 968px)": () => {
-        console.log("fired mobile");
-      },
+      "(max-width: 968px)": () => {},
 
       // all
       all: function () {},

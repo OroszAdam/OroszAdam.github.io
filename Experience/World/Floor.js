@@ -130,7 +130,7 @@ export default class Floor {
         value: 0,
       },
       timeMultiplier: {
-        value: 0,
+        value: 0.01,
       },
       threshold: {
         value: 0.1,
@@ -195,7 +195,6 @@ export default class Floor {
     this.water.position.z = -0.5;
     this.water.rotation.x = -Math.PI / 2;
     this.scene.add(this.water);
-    console.log(this.water);
   }
   update() {
     // depth pass
@@ -213,14 +212,23 @@ export default class Floor {
     // beauty pass
     var time = this.clock.getElapsedTime();
     this.water.material.uniforms.threshold.value =
-      0.2 + 0.05 * Math.sin(time * 0.15);
+      0.2 + 0.1 * Math.sin(time * 0.2);
     this.water.material.uniforms.time.value = time;
-    this.water.material.uniforms.timeMultiplier.value =
-      0.005 * Math.sin(time * 0.15);
     this.water.material.uniforms.foamColor.value.set(this.params.foamColor);
     this.water.material.uniforms.waterColor.value.set(this.params.waterColor);
 
     this.renderer.renderer.render(this.scene, this.camera.perspectiveCamera);
+  }
+  resize() {
+    // We have to change the water and rendertarget resolution on screen resize
+    this.renderTarget.setSize(
+      window.innerWidth * this.experience.sizes.pixelRatio,
+      window.innerHeight * this.experience.sizes.pixelRatio
+    );
+    this.water.material.uniforms.resolution.value.set(
+      window.innerWidth * this.experience.sizes.pixelRatio,
+      window.innerHeight * this.experience.sizes.pixelRatio
+    );
   }
 }
 
