@@ -49,6 +49,17 @@ body {
   align-items: center;
   justify-content: center;
 }
+.circular-progress-outer {
+  position: relative;
+  height: 270px;
+  width: 270px;
+  border-radius: 50%;
+  background: conic-gradient(var(--primary-navyBlue) 3.6deg, #ffffff 15deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 100px var(--primary-navyBlue);
+}
 
 /* Experience ---------------------------------*/
 .experience {

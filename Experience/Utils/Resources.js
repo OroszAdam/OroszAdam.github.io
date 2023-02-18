@@ -21,8 +21,6 @@ export default class Resources extends EventEmitter {
 
     this.loadingManager = new THREE.LoadingManager();
 
-    this.loadingManager.onStart = function (url, item, total) {};
-
     const progressBar = document.querySelector(".circular-progress");
     this.progressBarContainer = document.querySelector(
       ".progress-bar-container"
@@ -37,9 +35,14 @@ export default class Resources extends EventEmitter {
       }deg, #ffffff ${(loaded / total) * 360 + 30}deg)`;
     };
 
-    this.loadingManager.onLoad = this.finishLoading();
+    this.loadingManager.onLoad = () => {
+      setTimeout(() => {
+        this.finishLoading();
+      }, 2000);
+    };
     this.loadingManager.onError = function () {};
 
+    this.loadInProgressAnimation();
     this.setLoaders();
     this.startLoading();
   }
@@ -60,12 +63,38 @@ export default class Resources extends EventEmitter {
       {
         onComplete: () => {
           this.page.style.position = "inherit";
+          clearInterval(this.progress);
         },
         duration: 2,
         scale: 1.5,
       },
       0.5
     );
+  }
+  loadInProgressAnimation() {
+    let circularProgress = document.querySelector(".circular-progress-outer");
+    let progressStartValue = 0,
+      progressEndValue = 50,
+      speed = 36,
+      stepValue = 7.2,
+      tiktok = true;
+    this.progress = setInterval(() => {
+      progressStartValue++;
+      tiktok
+        ? (circularProgress.style.background = `conic-gradient(var(--primary-navyBlue) ${
+            progressStartValue * stepValue
+          }deg, #ffffff ${progressStartValue * 0 + 0}deg)`)
+        : (circularProgress.style.background = `conic-gradient(#ffffff ${
+            progressStartValue * stepValue
+          }deg, var(--primary-navyBlue) ${progressStartValue * 0 + 0}deg)`);
+      if (progressStartValue == progressEndValue) {
+        tiktok
+          ? (circularProgress.style.background = `conic-gradient(#ffffff 0deg, var(--primary-navyBlue) 0deg)`)
+          : (circularProgress.style.background = `conic-gradient(var(--primary-navyBlue) 0deg, #ffffff 0deg)`);
+        progressStartValue = 0;
+        tiktok = !tiktok;
+      }
+    }, speed);
   }
   setLoaders() {
     this.loaders = {};
