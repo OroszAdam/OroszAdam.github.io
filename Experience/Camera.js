@@ -12,7 +12,7 @@ export default class Camera {
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
     this.canvas = this.experience.canvas;
-    this.initialCameraPosition = new THREE.Vector3(0.15, 10, 11.6);
+    this.initialCameraPosition = new THREE.Vector3(0.15, 10.5, 11.6);
     this.createPerspectiveCamera();
     this.createOrthographicCamera();
     // this.setOrbitControls();
@@ -26,14 +26,27 @@ export default class Camera {
       0.1,
       1000
     );
+    this.setPerspectiveCameraPosRot();
     this.scene.add(this.perspectiveCamera);
-    this.perspectiveCamera.rotation.x = -0.74;
-    this.perspectiveCamera.position.x = this.initialCameraPosition.x;
-    this.perspectiveCamera.position.y = this.initialCameraPosition.y;
-    this.perspectiveCamera.position.z = this.initialCameraPosition.z;
+
     // this.perspectiveCamera.position.x = 0.15;
     // this.perspectiveCamera.position.y = 10;
     // this.perspectiveCamera.position.z = 11.6;
+  }
+  setPerspectiveCameraPosRot() {
+    window.matchMedia({
+      // Desktop
+      "(min-width: 1080px)": () => {},
+    });
+    if (window.matchMedia("(min-width: 1080px)").matches) {
+      this.perspectiveCamera.rotation.x = -0.76;
+      this.perspectiveCamera.position.y = this.initialCameraPosition.y;
+      this.perspectiveCamera.position.z = this.initialCameraPosition.z;
+    } else {
+      this.perspectiveCamera.rotation.x = -0.86;
+      this.perspectiveCamera.position.y = this.initialCameraPosition.y + 7;
+      this.perspectiveCamera.position.z = this.initialCameraPosition.z + 3.8;
+    }
   }
   createOrthographicCamera() {
     this.orthographicCamera = new THREE.OrthographicCamera(
@@ -76,9 +89,10 @@ export default class Camera {
 
   resize() {
     // Updateing Perspective Camera on Resize
+
     this.perspectiveCamera.aspect = this.sizes.aspect;
     this.perspectiveCamera.updateProjectionMatrix();
-
+    this.setPerspectiveCameraPosRot();
     // Updating Orthographics Camera on Resize
     this.orthographicCamera.left =
       (-this.sizes.aspect * this.sizes.frustrum) / 2;

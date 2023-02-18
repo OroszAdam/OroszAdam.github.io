@@ -126,13 +126,19 @@ body {
 
 /* Section Formatting ----------------------------*/
 .section-margin {
-  height: 750px;
+  height: 100vh;
   width: 100%;
 }
 
 .section {
   width: 40%;
-  padding: 200px 5%;
+  height: 100vh;
+  padding-left: 5%;
+  padding-right: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: var(--primary-babyBlueTransparent);
   overflow: hidden;
   box-shadow: 0px 0px 100px var(--primary-navyBlue),
@@ -169,14 +175,20 @@ body {
 }
 
 .section-text {
+  color: var(--primary-navyBlue);
   margin-top: 18px;
   font-size: 24px;
   font-weight: 400;
+  background-color: var(--primary-babyBlue);
+  box-shadow: 0 0 25px var(--primary-navyBlue);
+  padding: 5%;
+  border-radius: 10% 5px;
 }
 
 /* Fancy Decoration Part of Section */
 .section-title {
   position: relative;
+  width: 500px;
   color: var(--primary-navyBlue);
   padding-bottom: 100px;
 }
@@ -192,7 +204,7 @@ body {
 .section-title-text-right {
   display: block;
   font-size: 56px;
-  font-weight: 500;
+  font-weight: 800;
   transform-origin: left;
   transform: skewY(-20deg);
   z-index: 5;
@@ -206,9 +218,8 @@ body {
   position: absolute;
   display: block;
   width: 100%;
-  max-width: 280px;
+  max-width: 380px;
   height: 60px;
-  border: 1px solid var(--primary-navyBlue);
   transform-origin: left;
   transform: skewY(20deg);
 }

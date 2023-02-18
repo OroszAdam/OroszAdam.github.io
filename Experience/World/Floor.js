@@ -167,7 +167,7 @@ export default class Floor {
     this.renderTarget.texture.generateMipmaps = false;
     this.renderTarget.stencilBuffer = false;
 
-    var waterGeometry = new THREE.PlaneBufferGeometry(41, 20);
+    var waterGeometry = new THREE.PlaneBufferGeometry(41, 25);
     var waterMaterial = new THREE.ShaderMaterial({
       defines: {
         DEPTH_PACKING: 1,
