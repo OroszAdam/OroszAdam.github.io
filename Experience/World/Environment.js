@@ -60,6 +60,9 @@ export default class Environment {
       GSAP.to(this.ambientLight, {
         intensity: 0.8,
       });
+      GSAP.to(this.experience.world.floor.params, {
+        waterColor: 0x52af,
+      });
     } else {
       GSAP.to(this.sunLight.color, {
         r: 1,
@@ -76,6 +79,9 @@ export default class Environment {
       });
       GSAP.to(this.ambientLight, {
         intensity: 0.8,
+      });
+      GSAP.to(this.experience.world.floor.params, {
+        waterColor: 0x51af,
       });
     }
   }

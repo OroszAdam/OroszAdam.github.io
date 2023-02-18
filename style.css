@@ -7,7 +7,7 @@
 
 html,
 body {
-  font-family: "Acme", sans-serif;
+  font-family: "Labrada", serif;
   color: var(--text-black);
 }
 
@@ -20,6 +20,7 @@ body {
   --primary-blueGrotto: #189ab4;
   --primary-blueGreen: #75e6da;
   --primary-babyBlue: #d4f1f4;
+  --primary-babyBlueTransparent: #d4f1f4e0;
 }
 /* Loading ---------------------------------*/
 .progress-bar-container {
@@ -132,8 +133,10 @@ body {
 .section {
   width: 40%;
   padding: 200px 5%;
-  background-color: var(--primary-seaBlue);
+  background-color: var(--primary-babyBlueTransparent);
   overflow: hidden;
+  box-shadow: 0px 0px 100px var(--primary-navyBlue),
+    inset 0 0 50px var(--primary-blueGrotto);
 }
 
 .left {
@@ -159,7 +162,7 @@ body {
 }
 
 .section-heading {
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 700;
   line-height: 1.8;
   margin-top: 64px;
@@ -167,7 +170,8 @@ body {
 
 .section-text {
   margin-top: 18px;
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: 400;
 }
 
 /* Fancy Decoration Part of Section */
@@ -179,7 +183,7 @@ body {
 .section-title-text-left {
   display: block;
   font-size: 56px;
-  font-weight: 500;
+  font-weight: 800;
   transform-origin: left;
   transform: skewY(20deg);
   z-index: 5;
@@ -255,8 +259,12 @@ body {
   position: absolute;
   top: 3%;
   left: 3%;
-  padding: 50px;
-  background-color: var(--primary-babyBlue);
+  padding-top: 20px;
+  padding-bottom: 25px;
+  padding-left: 50px;
+  padding-right: 50px;
+  background-color: var(--primary-babyBlueTransparent);
+  border-color: var(--primary-navyBlue);
   border-radius: 25% 10%;
   box-shadow: 5px 5px 10px var(--primary-navyBlue);
 }
@@ -265,8 +273,11 @@ body {
   position: absolute;
   bottom: 3%;
   right: 3%;
-  padding: 50px;
-  background-color: var(--primary-babyBlue);
+  padding-top: 20px;
+  padding-bottom: 25px;
+  padding-left: 50px;
+  padding-right: 50px;
+  background-color: var(--primary-babyBlueTransparent);
   border-radius: 25% 10%;
   box-shadow: 5px 5px 10px var(--primary-navyBlue);
 }
@@ -274,6 +285,7 @@ body {
 .hero-main-title {
   font-size: 76px;
   color: var(--primary-navyBlue);
+  font-weight: 800;
   /* text-shadow: 4px 0px 5px var(--primary-navyBlue); */
 }
 .hero-main-description {

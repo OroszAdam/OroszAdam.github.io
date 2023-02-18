@@ -19,6 +19,14 @@ export default class Controls {
     ScrollTrigger.matchMedia({
       // Desktop
       "(min-width: 969px)": () => {
+        console.log("Desktop mode");
+        const titleComp = document.querySelector(".hero-main");
+        const secondTitleComp = document.querySelector(".hero-second");
+        titleComp.style.top = "3%";
+        titleComp.style.bottom = "auto";
+        secondTitleComp.style.top = "auto";
+        secondTitleComp.style.bottom = "3%";
+
         // First section move -------------------------------------
         this.firstMoveTimeline = new GSAP.timeline({
           scrollTrigger: {
@@ -125,7 +133,13 @@ export default class Controls {
       },
       // Mobile
       "(max-width: 968px)": () => {
-        console.log("mobile");
+        console.log("Mobile mode");
+        const titleComp = document.querySelector(".hero-main");
+        const secondTitleComp = document.querySelector(".hero-second");
+        titleComp.style.top = "auto";
+        titleComp.style.bottom = "3%";
+        secondTitleComp.style.top = "3%";
+        secondTitleComp.style.bottom = "auto";
       },
 
       // all
