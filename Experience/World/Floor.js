@@ -2,6 +2,8 @@ import * as THREE from "three";
 import Experience from "../Experience.js";
 import { Water } from "three/addons/objects/Water2.js";
 import GUI from "lil-gui";
+import Theme from "../Theme.js";
+import { Color } from "three";
 
 export default class Floor {
   constructor() {
@@ -114,7 +116,7 @@ export default class Floor {
 
     this.params = {
       foamColor: 0x65a2e8,
-      waterColor: 0x51af,
+      waterColor: 0x086d99,
       threshold: 0.25,
     };
 
@@ -173,10 +175,9 @@ export default class Floor {
         DEPTH_PACKING: 1,
         ORTHOGRAPHIC_CAMERA: 0,
       },
-      uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib["fog"], uniforms]),
+      uniforms: uniforms,
       vertexShader: Floor.WaterShader.vertexShader,
       fragmentShader: Floor.WaterShader.fragmentShader,
-      fog: true,
     });
 
     waterMaterial.uniforms.cameraNear.value =

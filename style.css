@@ -15,11 +15,13 @@ body {
   --text-black: rgb(43, 41, 41);
   --primary-color: rgb(134, 95, 131);
   --primary-pink: rgb(228, 171, 206);
-  --primary-seaBlue: #00a7d9;
+  --primary-seaBlue: #086d99;
   --primary-navyBlue: #05445e;
   --primary-blueGrotto: #189ab4;
   --primary-blueGreen: #75e6da;
   --primary-babyBlue: #d4f1f4;
+  /* --primary-babyBlue: #8db6bb; */
+  /* --primary-babyBlueTransparent: #8db6bbe0; */
   --primary-babyBlueTransparent: #d4f1f4e0;
 }
 /* Loading ---------------------------------*/
@@ -73,13 +75,12 @@ body {
 /* Togglebar ---------------------------------*/
 
 .toggle-bar {
-  position: fixed;
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  top: 48px;
-  right: 48px;
+  top: 0px;
   z-index: 99;
   opacity: 0;
 }

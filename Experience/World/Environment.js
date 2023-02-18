@@ -4,6 +4,7 @@ import Experience from "../Experience.js";
 import GSAP from "gsap";
 
 import GUI from "lil-gui";
+import { Color } from "three";
 export default class Environment {
   constructor() {
     this.experience = new Experience();
@@ -60,9 +61,8 @@ export default class Environment {
       GSAP.to(this.ambientLight, {
         intensity: 0.8,
       });
-      GSAP.to(this.experience.world.floor.params, {
-        waterColor: 0x52af,
-      });
+      this.experience.world.floor.params.waterColor = new Color("#00050a");
+      this.experience.world.floor.params.foamColor = new Color("#0a1b22");
     } else {
       GSAP.to(this.sunLight.color, {
         r: 1,
@@ -80,9 +80,8 @@ export default class Environment {
       GSAP.to(this.ambientLight, {
         intensity: 0.8,
       });
-      GSAP.to(this.experience.world.floor.params, {
-        waterColor: 0x51af,
-      });
+      this.experience.world.floor.params.waterColor = new Color(0x086d99);
+      this.experience.world.floor.params.foamColor = new Color(0x65a2e8);
     }
   }
   resize() {}
