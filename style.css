@@ -143,8 +143,9 @@ body {
 }
 
 .section {
-  width: 40%;
+  width: 45%;
   height: 100vh;
+  min-height: 700px;
   padding-left: 5%;
   padding-right: 5%;
   display: flex;
@@ -153,25 +154,35 @@ body {
   align-items: center;
   background-color: var(--primary-babyBlueTransparent);
   overflow: hidden;
-  box-shadow: 0px 0px 100px var(--primary-navyBlue),
-    inset 0 0 50px var(--primary-blueGrotto);
+}
+.section:hover {
+  scale: 101%;
 }
 
 .left {
   margin-right: auto;
   border-top-right-radius: 30% 10%;
   border-bottom-right-radius: 30% 10%;
+  box-shadow: 5px 0px 15px var(--primary-seaBlue),
+    inset -10px 0 15px var(--primary-babyBlue);
 }
+
 .right {
   margin-left: auto;
   border-top-left-radius: 30% 10%;
   border-bottom-left-radius: 30% 10%;
+  box-shadow: 5px 0px 15px var(--primary-seaBlue),
+    inset -10px 0 15px var(--primary-babyBlue);
 }
 
 .section-intro-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
   position: relative;
+  width: 80%;
   padding: 10% 5%;
-  /* border-bottom: 2px solid var(--primary-navyBlue); */
+  border-bottom: 2px solid var(--primary-navyBlue);
   padding-bottom: 150px;
 }
 .section-detail-wrapper {
@@ -191,16 +202,15 @@ body {
   margin-top: 18px;
   font-size: 16px;
   font-weight: 400;
-  background-color: var(--primary-babyBlue);
-  box-shadow: 0 0 25px var(--primary-navyBlue);
+  box-shadow: 0 0 10px var(--primary-seaBlue);
   padding: 5%;
-  border-radius: 10% 5px;
+  border-radius: 20% 10% 20% 10%;
 }
 
 /* Fancy Decoration Part of Section */
 .section-title {
   position: relative;
-  width: 100%;
+  width: 80%;
   color: var(--primary-navyBlue);
   padding-bottom: 100px;
 }
