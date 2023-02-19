@@ -36,9 +36,9 @@ export default class Resources extends EventEmitter {
     };
 
     this.loadingManager.onLoad = () => {
-      setTimeout(() => {
+      if (this.experience.world.floor) {
         this.finishLoading();
-      }, 2000);
+      }
     };
     this.loadingManager.onError = function () {};
 
