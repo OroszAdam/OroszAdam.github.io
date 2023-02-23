@@ -60,13 +60,13 @@ export default class Controls {
           this.camera.perspectiveCamera.position,
           {
             x: () => {
-              return -0.7969502564026607;
+              return -0.8;
             },
             y: () => {
-              return 6.313444815450679;
+              return 6.3;
             },
             z: () => {
-              return 4.459328730372239;
+              return 4.5;
             },
           },
           "same"
@@ -92,13 +92,100 @@ export default class Controls {
             trigger: ".third-move",
             markers: false,
             start: "top bottom",
-            end: "bottom bottom",
+            end: "bottom top",
             scrub: 0.6,
             // for updating x:
             invalidateOnRefresh: true,
           },
         });
         this.thirdMoveTimeline.to(
+          this.camera.perspectiveCamera.position,
+          {
+            //6.18363840003403, y: 5.238163550005358, z: 4.9061590914479405
+            x: () => {
+              return 6.2;
+            },
+            y: () => {
+              return 5.2;
+            },
+            z: () => {
+              return 4.9;
+            },
+          },
+          "same"
+        );
+        this.thirdMoveTimeline.to(
+          this.camera.perspectiveCamera.rotation,
+          {
+            x: () => {
+              return -1.15;
+            },
+            y: () => {
+              return 0.84;
+            },
+            z: () => {
+              return 1.04;
+            },
+          },
+          "same"
+        );
+        // Fourth section move -------------------------------------
+        this.fourthMoveTimeline = new GSAP.timeline({
+          scrollTrigger: {
+            trigger: ".fourth-move",
+            markers: false,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.6,
+            // for updating x:
+            invalidateOnRefresh: true,
+          },
+        });
+        this.fourthMoveTimeline.to(
+          this.camera.perspectiveCamera.position,
+          {
+            //0.8167064263210997, y: 6.395481215100333, z: 2.41732406259092,
+            x: () => {
+              return 0.82;
+            },
+            y: () => {
+              return 6.4;
+            },
+            z: () => {
+              return 2.42;
+            },
+          },
+          "same"
+        );
+        this.fourthMoveTimeline.to(
+          this.camera.perspectiveCamera.rotation,
+          {
+            //-0.8920911461277647, _y: -0.18276994660438076, _z: -0.22165266086880536,
+            x: () => {
+              return -0.89;
+            },
+            y: () => {
+              return -0.183;
+            },
+            z: () => {
+              return -0.22;
+            },
+          },
+          "same"
+        );
+        // Fifth section move -------------------------------------
+        this.fifthMoveTimeline = new GSAP.timeline({
+          scrollTrigger: {
+            trigger: ".fifth-move",
+            markers: false,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.6,
+            // for updating x:
+            invalidateOnRefresh: true,
+          },
+        });
+        this.fifthMoveTimeline.to(
           this.camera.perspectiveCamera.position,
           {
             x: () => {
@@ -115,7 +202,7 @@ export default class Controls {
           },
           "same"
         );
-        this.thirdMoveTimeline.to(
+        this.fifthMoveTimeline.to(
           this.camera.perspectiveCamera.rotation,
           {
             x: () => {
