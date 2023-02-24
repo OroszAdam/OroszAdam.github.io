@@ -1,9 +1,6 @@
 import * as THREE from "three";
 import Experience from "../Experience.js";
-import { Water } from "three/addons/objects/Water2.js";
-import GUI from "lil-gui";
-import Theme from "../Theme.js";
-import { Color } from "three";
+
 import EventEmitter from "events";
 
 export default class Floor extends EventEmitter {
@@ -16,91 +13,93 @@ export default class Floor extends EventEmitter {
     this.scene = this.experience.scene;
     this.resources = this.experience.resources;
     this.controls = this.experience.controls;
+    this.clock = new THREE.Clock();
 
     this.setWater();
 
     this.update();
   }
   setWater() {
-    this.depthMaterial = new THREE.MeshDepthMaterial();
-    this.depthMaterial.depthPacking = THREE.RGBADepthPacking;
-    this.depthMaterial.blending = THREE.NoBlending;
-    var dudvMap = new THREE.TextureLoader().load(
-      "https://i.imgur.com/hOIsXiZ.png"
+    // Set up depth buffer
+    this.depthTarget = new THREE.WebGLRenderTarget(
+      window.innerWidth,
+      window.innerHeight
     );
-    dudvMap.wrapS = dudvMap.wrapT = THREE.RepeatWrapping;
+    this.depthTarget.texture.format = THREE.RGBFormat;
+    this.depthTarget.texture.minFilter = THREE.NearestFilter;
+    this.depthTarget.texture.magFilter = THREE.NearestFilter;
+    this.depthTarget.texture.generateMipmaps = false;
+    this.depthTarget.stencilBuffer = false;
+    this.depthTarget.depthBuffer = true;
+    this.depthTarget.depthTexture = new THREE.DepthTexture();
+    this.depthTarget.depthTexture.type = THREE.UnsignedShortType;
+
+    // This is used as a hack to get the depth of the pixels at the water surface by redrawing the scene with the water in the depth buffer
+    this.depthTarget2 = new THREE.WebGLRenderTarget(
+      window.innerWidth,
+      window.innerHeight
+    );
+    this.depthTarget2.texture.format = THREE.RGBFormat;
+    this.depthTarget2.texture.minFilter = THREE.NearestFilter;
+    this.depthTarget2.texture.magFilter = THREE.NearestFilter;
+    this.depthTarget2.texture.generateMipmaps = false;
+    this.depthTarget2.stencilBuffer = false;
+    this.depthTarget2.depthBuffer = true;
+    this.depthTarget2.depthTexture = new THREE.DepthTexture();
+    this.depthTarget2.depthTexture.type = THREE.UnsignedShortType;
+    var waterLinesTexture = new THREE.TextureLoader().load(
+      "/textures/WaterTexture.png"
+    );
+    waterLinesTexture.wrapS = THREE.RepeatWrapping;
+    waterLinesTexture.wrapT = THREE.RepeatWrapping;
     var uniforms = {
-      time: {
-        value: 0,
-      },
-      timeMultiplier: {
-        value: 0.01,
-      },
-      threshold: {
-        value: 0.1,
-      },
-      tDudv: {
-        value: null,
-      },
-      tDepth: {
-        value: null,
-      },
-      cameraNear: {
-        value: 0,
-      },
-      cameraFar: {
-        value: 0,
-      },
-      resolution: {
-        value: new THREE.Vector2(),
-      },
-      foamColor: {
-        value: new THREE.Color(),
-      },
-      waterColor: {
-        value: new THREE.Color(),
+      uTime: { value: 0.0 },
+      uSurfaceTexture: { type: "t", value: waterLinesTexture },
+      cameraNear: { value: this.camera.perspectiveCamera.near },
+      cameraFar: { value: this.camera.perspectiveCamera.far },
+      uDepthMap: { value: this.depthTarget.depthTexture },
+      uDepthMap2: { value: this.depthTarget2.depthTexture },
+      isMask: { value: false },
+      uScreenSize: {
+        value: new THREE.Vector4(
+          window.innerWidth,
+          window.innerHeight,
+          1 / window.innerWidth,
+          1 / window.innerHeight
+        ),
       },
     };
 
-    this.renderTarget = new THREE.WebGLRenderTarget(
-      window.innerWidth * this.experience.sizes.pixelRatio,
-      window.innerHeight * this.experience.sizes.pixelRatio
+    // Used to know which areas of the screen are udnerwater
+    this.maskTarget = new THREE.WebGLRenderTarget(
+      window.innerWidth,
+      window.innerHeight
     );
-    this.renderTarget.texture.minFilter = THREE.NearestFilter;
-    this.renderTarget.texture.magFilter = THREE.NearestFilter;
-    this.renderTarget.texture.generateMipmaps = false;
-    this.renderTarget.stencilBuffer = false;
-    this.params = {
-      foamColor: 0x65a2e8,
-      waterColor: 0x086d99,
-      threshold: 0.25,
-    };
+    this.maskTarget.texture.format = THREE.RGBFormat;
+    this.maskTarget.texture.minFilter = THREE.NearestFilter;
+    this.maskTarget.texture.magFilter = THREE.NearestFilter;
+    this.maskTarget.texture.generateMipmaps = false;
+    this.maskTarget.stencilBuffer = false;
 
-    this.clock = new THREE.Clock();
-    this.scene.background = new THREE.Color(0x1e485e);
-
-    var waterGeometry = new THREE.PlaneBufferGeometry(41, 25);
-    var waterMaterial = new THREE.ShaderMaterial({
-      defines: {
-        DEPTH_PACKING: 1,
-        ORTHOGRAPHIC_CAMERA: 0,
-      },
+    // Used to apply the distortion effect
+    this.mainTarget = new THREE.WebGLRenderTarget(
+      window.innerWidth,
+      window.innerHeight
+    );
+    this.mainTarget.texture.format = THREE.RGBFormat;
+    this.mainTarget.texture.minFilter = THREE.NearestFilter;
+    this.mainTarget.texture.magFilter = THREE.NearestFilter;
+    this.mainTarget.texture.generateMipmaps = false;
+    this.mainTarget.stencilBuffer = false;
+    var water_geometry = new THREE.PlaneGeometry(41, 25, 30, 30);
+    var water_material = new THREE.ShaderMaterial({
       uniforms: uniforms,
       vertexShader: Floor.WaterShader.vertexShader,
       fragmentShader: Floor.WaterShader.fragmentShader,
+      transparent: true,
+      depthWrite: false,
     });
-
-    waterMaterial.uniforms.cameraNear.value =
-      this.camera.perspectiveCamera.near;
-    waterMaterial.uniforms.cameraFar.value = this.camera.perspectiveCamera.far;
-    waterMaterial.uniforms.resolution.value.set(
-      window.innerWidth * this.experience.sizes.pixelRatio,
-      window.innerHeight * this.experience.sizes.pixelRatio
-    );
-    waterMaterial.uniforms.tDudv.value = dudvMap;
-    waterMaterial.uniforms.tDepth.value = this.renderTarget.texture;
-
-    this.water = new THREE.Mesh(waterGeometry, waterMaterial);
+    this.water = new THREE.Mesh(water_geometry, water_material);
     this.water.position.x = -5;
     this.water.position.y = -0.2;
     this.water.position.z = -3;
@@ -108,108 +107,78 @@ export default class Floor extends EventEmitter {
     this.scene.add(this.water);
   }
   update() {
-    // depth pass
-
-    this.water.visible = false; // we don't want the depth of the water
-    this.scene.overrideMaterial = this.depthMaterial;
-
-    this.renderer.renderer.setRenderTarget(this.renderTarget);
     this.renderer.renderer.render(this.scene, this.camera.perspectiveCamera);
-    this.renderer.renderer.setRenderTarget(null);
 
-    this.scene.overrideMaterial = null;
-    this.water.visible = true;
-
-    // beauty pass
     var time = this.clock.getElapsedTime();
-    this.water.material.uniforms.threshold.value =
-      0.2 + 0.1 * Math.sin(time * 0.2);
-    this.water.material.uniforms.time.value = time;
-    this.water.material.uniforms.foamColor.value.set(this.params.foamColor);
-    this.water.material.uniforms.waterColor.value.set(this.params.waterColor);
 
-    this.renderer.renderer.render(this.scene, this.camera.perspectiveCamera);
+    this.water.material.uniforms.uTime.value +=
+      0.03 * Math.sin(0.2 * time) + 0.01 * Math.sin(1 * time);
   }
   resize() {
-    // We have to change the water and rendertarget resolution on screen resize
-    this.renderTarget.setSize(
-      window.innerWidth * this.experience.sizes.pixelRatio,
-      window.innerHeight * this.experience.sizes.pixelRatio
-    );
-    this.water.material.uniforms.resolution.value.set(
-      window.innerWidth * this.experience.sizes.pixelRatio,
-      window.innerHeight * this.experience.sizes.pixelRatio
+    this.water.material.uniforms.uScreenSize.value.set(
+      window.innerWidth,
+      window.innerHeight,
+      1 / window.innerWidth,
+      1 / window.innerHeight
     );
   }
 }
 
 Floor.WaterShader = {
   fragmentShader: `
-   #include <common>
-      #include <packing>
-      #include <fog_pars_fragment>
-
-      varying vec2 vUv;
-      uniform sampler2D tDepth;
-      uniform sampler2D tDudv;
-      uniform vec3 waterColor;
-      uniform vec3 foamColor;
-      uniform float cameraNear;
-      uniform float cameraFar;
-      uniform float time;
-      uniform float timeMultiplier;
-      uniform float threshold;
-      uniform vec2 resolution;
-
-      float getDepth( const in vec2 screenPosition ) {
-      	#if DEPTH_PACKING == 1
-      		return unpackRGBAToDepth( texture2D( tDepth, screenPosition ) );
-      	#else
-      		return texture2D( tDepth, screenPosition ).x;
-      	#endif
-      }
-
-      float getViewZ( const in float depth ) {
-      	#if ORTHOGRAPHIC_CAMERA == 1
-      		return orthographicDepthToViewZ( depth, cameraNear, cameraFar );
-      	#else
-      		return perspectiveDepthToViewZ( depth, cameraNear, cameraFar );
-      	#endif
-      }
-
-      void main() {
-
-      	vec2 screenUV = gl_FragCoord.xy / resolution;
-
-      	float fragmentLinearEyeDepth = getViewZ( gl_FragCoord.z );
-      	float linearEyeDepth = getViewZ( getDepth( screenUV ) );
-
-      	float diff = saturate( fragmentLinearEyeDepth - linearEyeDepth );
-
-      	vec2 displacement = texture2D( tDudv, ( vUv * 2.0 ) - time * timeMultiplier ).rg;
-      	displacement = ( ( displacement * 2.0 ) - 1.25 ) * 1.0;
-      	diff += displacement.x;
-
-      	gl_FragColor.rgb = mix( foamColor, waterColor, step( threshold, diff ) );
-      	gl_FragColor.a = 1.0;
-
-      	#include <tonemapping_fragment>
-      	#include <encodings_fragment>
-      	#include <fog_fragment>
-
-      }`,
+				#include <packing>
+				varying vec2 vUV;
+				varying vec3 WorldPosition;
+				uniform sampler2D uSurfaceTexture;
+				uniform sampler2D uDepthMap;
+				uniform sampler2D uDepthMap2;
+				uniform float uTime;
+				uniform float cameraNear;
+				uniform float cameraFar;
+				uniform vec4 uScreenSize;
+				uniform bool isMask;
+				float readDepth (sampler2D depthSampler, vec2 coord) {
+					float fragCoordZ = texture2D(depthSampler, coord).x;
+					float viewZ = perspectiveDepthToViewZ( fragCoordZ, cameraNear, cameraFar );
+					return viewZToOrthographicDepth( viewZ, cameraNear, cameraFar );
+				}
+				float getLinearDepth(vec3 pos) {
+				    return -(viewMatrix * vec4(pos, 1.0)).z;
+				}
+				float getLinearScreenDepth(sampler2D map) {
+				    vec2 uv = gl_FragCoord.xy * uScreenSize.zw;
+				    return readDepth(map,uv);
+				}
+				void main(){
+					vec4 color = vec4(0.094, 0.407, 0.525,0.55);
+					vec2 pos = vUV * 5.0;
+    				pos.y -= uTime * 0.005;
+					vec4 WaterLines = texture2D(uSurfaceTexture,pos);
+					color.rgba += WaterLines.r * 0.1;
+					//float worldDepth = getLinearDepth(WorldPosition);
+					float worldDepth = getLinearScreenDepth(uDepthMap2);
+				    float screenDepth = getLinearScreenDepth(uDepthMap);
+				    float foamLine = clamp((screenDepth - worldDepth),0.0,1.0) ;
+				    if(foamLine < 0.001){
+				        color.rgba += 0.2;
+				    }
+				    if(isMask){
+				    	color = vec4(1.0);
+				    }
+					gl_FragColor = color;
+				}
+				`,
   vertexShader: `
-  #include <fog_pars_vertex>
-
-      varying vec2 vUv;
-
-      void main() {
-
-      	vUv = uv;
-
-      	#include <begin_vertex>
-      	#include <project_vertex>
-      	#include <fog_vertex>
-
-      }`,
+				uniform float uTime;
+				varying vec2 vUV;
+				varying vec3 WorldPosition;
+				void main() {
+					vec3 pos = position;
+					pos.z += cos(pos.x*5.0+uTime) * 0.1 * sin(pos.y * 6.0 + uTime);
+					WorldPosition = pos;
+					vUV = uv;
+					//gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+					gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
+				}
+				`,
 };
