@@ -48,22 +48,20 @@ export default class Environment {
   }
   switchTheme(theme) {
     const rootStyles = getComputedStyle(document.documentElement);
-    let textColor = rootStyles.getPropertyValue("--primary-textColor");
-    console.log(textColor);
-    console.log(document.querySelector(":root"));
-    const sectionBackgroundColor = rootStyles.getPropertyValue(
-      "--primary-sectionBackgroundColor"
-    );
-    const sectionTextBackgroundColor = rootStyles.getPropertyValue(
-      "--primary-sectionTextBackgroundColor"
-    );
     if (theme === "dark") {
-      document
-        .querySelector(":root")
-        .style.setProperty(
-          rootStyles.getPropertyValue("--primary-textColor"),
-          rootStyles.getPropertyValue("--primary-navyBlue")
-        );
+      document.documentElement.style.setProperty(
+        "--primary-textColor",
+        rootStyles.getPropertyValue("--primary-babyBlue")
+      );
+      document.documentElement.style.setProperty(
+        "--primary-sectionBackgroundColor",
+        rootStyles.getPropertyValue("--primary-navyBlueTransparent")
+      );
+      document.documentElement.style.setProperty(
+        "--primary-sectionTextBackgroundColor",
+        rootStyles.getPropertyValue("--primary-navyBlue")
+      );
+
       GSAP.to(this.sunLight.color, {
         r: 0.18823529411764706,
         g: 0.2549019607843137,
@@ -81,12 +79,18 @@ export default class Environment {
         intensity: 0.8,
       });
     } else {
-      document
-        .querySelector(":root")
-        .style.setProperty(
-          textColor,
-          rootStyles.getPropertyValue("--primary-babyBlue")
-        );
+      document.documentElement.style.setProperty(
+        "--primary-textColor",
+        rootStyles.getPropertyValue("--primary-navyBlue")
+      );
+      document.documentElement.style.setProperty(
+        "--primary-sectionBackgroundColor",
+        rootStyles.getPropertyValue("--primary-babyBlueTransparent")
+      );
+      document.documentElement.style.setProperty(
+        "--primary-sectionTextBackgroundColor",
+        rootStyles.getPropertyValue("--primary-babyBlue")
+      );
       GSAP.to(this.sunLight.color, {
         r: 1,
         g: 1,

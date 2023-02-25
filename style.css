@@ -29,16 +29,6 @@ body {
   --primary-sectionBackgroundColor: var(--primary-babyBlueTransparent);
   --primary-sectionTextBackgroundColor: var(--primary-babyBlue);
 }
-.styleDark {
-  --primary-textColor: var(--primary-babyBlue);
-  --primary-sectionBackgroundColor: var(--primary-navyBlueTransparent);
-  --primary-sectionTextBackgroundColor: var(--primary-navyBlue);
-}
-.styleLight {
-  --primary-textColor: var(--primary-navyBlue);
-  --primary-sectionBackgroundColor: var(--primary-babyBlueTransparent);
-  --primary-sectionTextBackgroundColor: var(--primary-babyBlue);
-}
 /* Loading ---------------------------------*/
 .progress-bar-container {
   position: absolute;

@@ -25,7 +25,7 @@ export default class Floor extends EventEmitter {
       window.innerWidth,
       window.innerHeight
     );
-    this.depthTarget.texture.format = THREE.RGBFormat;
+    this.depthTarget.texture.format = THREE.RGBAFormat;
     this.depthTarget.texture.minFilter = THREE.NearestFilter;
     this.depthTarget.texture.magFilter = THREE.NearestFilter;
     this.depthTarget.texture.generateMipmaps = false;
@@ -39,7 +39,7 @@ export default class Floor extends EventEmitter {
       window.innerWidth,
       window.innerHeight
     );
-    this.depthTarget2.texture.format = THREE.RGBFormat;
+    this.depthTarget2.texture.format = THREE.RGBAFormat;
     this.depthTarget2.texture.minFilter = THREE.NearestFilter;
     this.depthTarget2.texture.magFilter = THREE.NearestFilter;
     this.depthTarget2.texture.generateMipmaps = false;
@@ -113,7 +113,9 @@ export default class Floor extends EventEmitter {
 
     this.water.material.uniforms.uTime.value +=
       0.03 * Math.sin(0.2 * time) + 0.01 * Math.sin(1 * time);
-    this.BuoyancyUpdate();
+    this.experience.world?.room?.buoyantObjects.forEach((obj) => {
+      this.BuoyancyUpdate(obj);
+    });
   }
   resize() {
     this.water.material.uniforms.uScreenSize.value.set(
@@ -124,27 +126,23 @@ export default class Floor extends EventEmitter {
     );
   }
   BuoyancyUpdate(obj) {
-    var BuoyantObjects = this.experience.world?.room?.buoyantObjects;
-    for (var i = 0; i < BuoyantObjects.length; i++) {
-      var obj = BuoyantObjects[i];
-      if (obj == undefined) continue;
-      if (obj.time == undefined) {
-        obj.time = Math.random() * Math.PI * 2;
-        obj.initialPosition = obj.position.clone();
-        obj.initialRotation = obj.rotation.clone();
-      }
-
-      obj.time += 0.05;
-      // Move object up and down
-      obj.position.y = obj.initialPosition.y + Math.cos(obj.time) * 0.06;
-
-      // Rotate object slightly
-      obj.rotation.x = obj.initialRotation.x + Math.cos(obj.time * 0.25) * 0.02;
-      obj.rotation.y =
-        obj.initialRotation.y + Math.sin(obj.time * 0.5) * 2 * 0.04;
-      obj.rotation.z =
-        obj.initialRotation.z + Math.sin(obj.time * 0.75) * 2 * 0.04;
+    if (obj == undefined) return;
+    if (obj.time == undefined) {
+      obj.time = Math.random() * Math.PI * 2;
+      obj.initialPosition = obj.position.clone();
+      obj.initialRotation = obj.rotation.clone();
     }
+
+    obj.time += 0.05;
+    // Move object up and down
+    obj.position.y = obj.initialPosition.y + Math.cos(obj.time) * 0.06;
+
+    // Rotate object slightly
+    obj.rotation.x = obj.initialRotation.x + Math.cos(obj.time * 0.25) * 0.02;
+    obj.rotation.y =
+      obj.initialRotation.y + Math.sin(obj.time * 0.5) * 2 * 0.04;
+    obj.rotation.z =
+      obj.initialRotation.z + Math.sin(obj.time * 0.75) * 2 * 0.04;
   }
 }
 
