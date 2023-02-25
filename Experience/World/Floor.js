@@ -172,7 +172,7 @@ Floor.WaterShader = {
 				    return readDepth(map,uv);
 				}
 				void main(){
-					vec4 color = vec4(0.094, 0.407, 0.525,0.55);
+					vec4 color = vec4(0.01, 0.407, 0.655,0.6);
 					vec2 pos = vUV * 5.0;
     				pos.y -= uTime * 0.005;
 					vec4 WaterLines = texture2D(uSurfaceTexture,pos);
