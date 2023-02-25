@@ -113,6 +113,7 @@ export default class Floor extends EventEmitter {
 
     this.water.material.uniforms.uTime.value +=
       0.03 * Math.sin(0.2 * time) + 0.01 * Math.sin(1 * time);
+    this.BuoyancyUpdate();
   }
   resize() {
     this.water.material.uniforms.uScreenSize.value.set(
@@ -121,6 +122,29 @@ export default class Floor extends EventEmitter {
       1 / window.innerWidth,
       1 / window.innerHeight
     );
+  }
+  BuoyancyUpdate(obj) {
+    var BuoyantObjects = this.experience.world?.room?.buoyantObjects;
+    for (var i = 0; i < BuoyantObjects.length; i++) {
+      var obj = BuoyantObjects[i];
+      if (obj == undefined) continue;
+      if (obj.time == undefined) {
+        obj.time = Math.random() * Math.PI * 2;
+        obj.initialPosition = obj.position.clone();
+        obj.initialRotation = obj.rotation.clone();
+      }
+
+      obj.time += 0.05;
+      // Move object up and down
+      obj.position.y = obj.initialPosition.y + Math.cos(obj.time) * 0.06;
+
+      // Rotate object slightly
+      obj.rotation.x = obj.initialRotation.x + Math.cos(obj.time * 0.25) * 0.02;
+      obj.rotation.y =
+        obj.initialRotation.y + Math.sin(obj.time * 0.5) * 2 * 0.04;
+      obj.rotation.z =
+        obj.initialRotation.z + Math.sin(obj.time * 0.75) * 2 * 0.04;
+    }
   }
 }
 

@@ -1,5 +1,3 @@
-import * as THREE from "three";
-
 import Experience from "../Experience";
 
 import Room from "./Room.js";
@@ -19,9 +17,9 @@ export default class World {
 
     this.resources.on("ready", () => {
       this.environment = new Environment();
-      this.floor = new Floor();
       this.room = new Room();
       this.controls = new Controls();
+      this.floor = new Floor();
     });
 
     this.theme.on("switch", (theme) => {
@@ -37,6 +35,9 @@ export default class World {
   resize() {
     if (this.floor) {
       this.floor.resize();
+    }
+    if (this.environment) {
+      this.environment.resize();
     }
   }
   update() {

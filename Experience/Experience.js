@@ -12,6 +12,7 @@ import Renderer from "./Renderer";
 
 import World from "./World/World.js";
 import Controls from "./World/Controls";
+import Environment from "./World/Environment.js";
 
 export default class Experience {
   static instance;

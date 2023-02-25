@@ -19,7 +19,6 @@ export default class Controls {
     ScrollTrigger.matchMedia({
       // Desktop
       "(min-width: 1080px)": () => {
-        console.log("Desktop mode");
         const titleComp = document.querySelector(".hero-main");
         const secondTitleComp = document.querySelector(".hero-second");
         titleComp.style.top = "3%";
@@ -220,7 +219,6 @@ export default class Controls {
       },
       // Mobile
       "(max-width: 1080px)": () => {
-        console.log("Mobile mode");
         const titleComp = document.querySelector(".hero-main");
         const secondTitleComp = document.querySelector(".hero-second");
         titleComp.style.top = "auto";

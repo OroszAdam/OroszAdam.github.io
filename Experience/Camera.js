@@ -34,15 +34,14 @@ export default class Camera {
     // this.perspectiveCamera.position.z = 11.6;
   }
   setPerspectiveCameraPosRot() {
-    window.matchMedia({
-      // Desktop
-      "(min-width: 1080px)": () => {},
-    });
+    // Desktop mode
     if (window.matchMedia("(min-width: 1080px)").matches) {
       this.perspectiveCamera.rotation.x = -0.76;
       this.perspectiveCamera.position.y = this.initialCameraPosition.y;
       this.perspectiveCamera.position.z = this.initialCameraPosition.z;
-    } else {
+    }
+    // Mobile mode
+    else {
       this.perspectiveCamera.rotation.x = -0.86;
       this.perspectiveCamera.position.y = this.initialCameraPosition.y + 7;
       this.perspectiveCamera.position.z = this.initialCameraPosition.z + 3.8;
@@ -76,11 +75,11 @@ export default class Camera {
     // this.scene.add(axesHelper);
   }
 
-  // setOrbitControls() {
-  //   this.controls = new OrbitControls(this.perspectiveCamera, document.body);
-  //   this.controls.enableDamping = true;
-  //   this.controls.enableZoom = true;
-  // }
+  setOrbitControls() {
+    this.controls = new OrbitControls(this.perspectiveCamera, document.body);
+    this.controls.enableDamping = true;
+    this.controls.enableZoom = true;
+  }
   // setTrackballControls() {
   //   this.controls = new TrackballControls(this.orthographicCamera, this.canvas);
   //   this.controls.screen.width = this.canvas.width;

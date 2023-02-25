@@ -29,6 +29,7 @@ export default class Room {
     // };
 
     this.setModel();
+    this.setBuoyantObjects();
     // this.onMouseMove();
     // this.setGUI();
   }
@@ -87,7 +88,15 @@ export default class Room {
     // in case scaling is needed:
     //this.actualRoom.scale.set(0.1, 0.1, 0.1);
   }
+  setBuoyantObjects() {
+    this.buoyantObjects = {};
+    this.buoyantObjects = [
+      this.actualRoom.children.find((x) => x.name === "duckcycle"),
+      this.actualRoom.children.find((x) => x.name === "coconut_in_water"),
+    ];
 
+    console.log(this.buoyantObjects);
+  }
   onMouseMove() {
     window.addEventListener("mousemove", (e) => {
       this.rotationY =
