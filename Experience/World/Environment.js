@@ -78,6 +78,7 @@ export default class Environment {
       GSAP.to(this.ambientLight, {
         intensity: 0.8,
       });
+      this.experience.world.floor.water.material.uniforms.isNight.value = true;
     } else {
       document.documentElement.style.setProperty(
         "--primary-textColor",
@@ -107,6 +108,7 @@ export default class Environment {
       GSAP.to(this.ambientLight, {
         intensity: 0.8,
       });
+      this.experience.world.floor.water.material.uniforms.isNight.value = false;
     }
   }
   resize() {

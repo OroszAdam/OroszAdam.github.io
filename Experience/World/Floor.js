@@ -49,6 +49,7 @@ export default class Floor extends EventEmitter {
     this.depthTarget2.depthTexture.type = THREE.UnsignedShortType;
     var waterLinesTexture = new THREE.TextureLoader().load(
       "/textures/WaterTexture.png"
+      // "/textures/water/Water_1_M_Normal.jpg"
     );
     waterLinesTexture.wrapS = THREE.RepeatWrapping;
     waterLinesTexture.wrapT = THREE.RepeatWrapping;
@@ -60,6 +61,7 @@ export default class Floor extends EventEmitter {
       uDepthMap: { value: this.depthTarget.depthTexture },
       uDepthMap2: { value: this.depthTarget2.depthTexture },
       isMask: { value: false },
+      isNight: { value: false },
       uScreenSize: {
         value: new THREE.Vector4(
           window.innerWidth,
@@ -159,6 +161,7 @@ Floor.WaterShader = {
 				uniform float cameraFar;
 				uniform vec4 uScreenSize;
 				uniform bool isMask;
+        uniform bool isNight;
 				float readDepth (sampler2D depthSampler, vec2 coord) {
 					float fragCoordZ = texture2D(depthSampler, coord).x;
 					float viewZ = perspectiveDepthToViewZ( fragCoordZ, cameraNear, cameraFar );
@@ -172,21 +175,23 @@ Floor.WaterShader = {
 				    return readDepth(map,uv);
 				}
 				void main(){
-					vec4 color = vec4(0.01, 0.407, 0.655,0.6);
+          vec4 color = vec4(0.035, 0.508, 0.954,0.35);
+          if (isNight == true) {color = vec4(0.015, 0.094, 0.153, 0.45);};
 					vec2 pos = vUV * 5.0;
     				pos.y -= uTime * 0.005;
 					vec4 WaterLines = texture2D(uSurfaceTexture,pos);
-					color.rgba += WaterLines.r * 0.1;
+					color.rgba += WaterLines.r * 0.05;
+          if (isNight == true) color.rgba += WaterLines.r * 0.001;
 					//float worldDepth = getLinearDepth(WorldPosition);
 					float worldDepth = getLinearScreenDepth(uDepthMap2);
-				    float screenDepth = getLinearScreenDepth(uDepthMap);
-				    float foamLine = clamp((screenDepth - worldDepth),0.0,1.0) ;
-				    if(foamLine < 0.001){
-				        color.rgba += 0.2;
-				    }
-				    if(isMask){
-				    	color = vec4(1.0);
-				    }
+				  float screenDepth = getLinearScreenDepth(uDepthMap);
+				  float foamLine = clamp((screenDepth - worldDepth),0.0,1.0) ;
+				  if(foamLine < 0.001){
+				      color.rgba += 0.2;
+				  }
+				  if(isMask){
+				  	color = vec4(1.0);
+				  }
 					gl_FragColor = color;
 				}
 				`,

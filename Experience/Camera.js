@@ -24,14 +24,10 @@ export default class Camera {
       35,
       this.sizes.aspect,
       0.1,
-      1000
+      50
     );
     this.setPerspectiveCameraPosRot();
     this.scene.add(this.perspectiveCamera);
-
-    // this.perspectiveCamera.position.x = 0.15;
-    // this.perspectiveCamera.position.y = 10;
-    // this.perspectiveCamera.position.z = 11.6;
   }
   setPerspectiveCameraPosRot() {
     // Desktop mode
