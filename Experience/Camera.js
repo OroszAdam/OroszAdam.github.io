@@ -27,6 +27,7 @@ export default class Camera {
       50
     );
     this.setPerspectiveCameraPosRot();
+
     this.scene.add(this.perspectiveCamera);
   }
   setPerspectiveCameraPosRot() {

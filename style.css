@@ -288,7 +288,7 @@ body {
   height: 100%;
   width: 100%;
   max-width: 100%;
-  min-width: 600px;
+  min-width: 250px;
 }
 
 .hero-main {
@@ -312,6 +312,7 @@ body {
   position: absolute;
   bottom: 3%;
   right: 3%;
+  width: 75wv;
   padding-top: 20px;
   padding-bottom: 25px;
   padding-left: 50px;
@@ -322,14 +323,14 @@ body {
 }
 
 .hero-main-title {
-  font-size: 50px;
+  font-size: 36px;
   color: var(--primary-textColor);
   font-weight: 800;
   padding-bottom: 5%;
   /* text-shadow: 4px 0px 5px var(--primary-navyBlue); */
 }
 .hero-main-description {
-  font-size: 24px;
+  font-size: 14px;
   color: var(--primary-textColor);
   /* text-shadow: var(--primary-navyBlue) 1px 0 5px; */
 }
