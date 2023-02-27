@@ -54,6 +54,12 @@ export default class Floor extends EventEmitter {
     waterLinesTexture.wrapS = THREE.RepeatWrapping;
     waterLinesTexture.wrapT = THREE.RepeatWrapping;
     var uniforms = {
+      resolution: {
+        value: new THREE.Vector2(
+          window.innerWidth * this.renderer.renderer.pixelRatio,
+          window.innerHeight * this.renderer.renderer.pixelRatio
+        ),
+      },
       uTime: { value: 0.0 },
       uSurfaceTexture: { type: "t", value: waterLinesTexture },
       cameraNear: { value: this.camera.perspectiveCamera.near },
@@ -148,51 +154,61 @@ export default class Floor extends EventEmitter {
 
 Floor.WaterShader = {
   fragmentShader: `
-				#include <packing>
-				varying vec2 vUV;
-				varying vec3 WorldPosition;
-				uniform sampler2D uSurfaceTexture;
-				uniform sampler2D uDepthMap;
-				uniform sampler2D uDepthMap2;
-				uniform float uTime;
-				uniform float cameraNear;
-				uniform float cameraFar;
-				uniform vec4 uScreenSize;
-				uniform bool isMask;
-        uniform bool isNight;
-				float readDepth (sampler2D depthSampler, vec2 coord) {
-					float fragCoordZ = texture2D(depthSampler, coord).x;
-					float viewZ = perspectiveDepthToViewZ( fragCoordZ, cameraNear, cameraFar );
-					return viewZToOrthographicDepth( viewZ, cameraNear, cameraFar );
-				}
-				float getLinearDepth(vec3 pos) {
-				    return -(viewMatrix * vec4(pos, 1.0)).z;
-				}
-				float getLinearScreenDepth(sampler2D map) {
-				    vec2 uv = gl_FragCoord.xy * uScreenSize.zw;
-				    return readDepth(map,uv);
-				}
-				void main(){
-          vec4 color = vec4(0.035, 0.508, 0.954,0.35);
-          if (isNight == true) {color = vec4(0.015, 0.094, 0.153, 0.45);};
-					vec2 pos = vUV * 5.0;
-    				pos.y -= uTime * 0.005;
-					vec4 WaterLines = texture2D(uSurfaceTexture,pos);
-					color.rgba += WaterLines.r * 0.05;
-          if (isNight == true) color.rgba += WaterLines.r * 0.001;
-					//float worldDepth = getLinearDepth(WorldPosition);
-					float worldDepth = getLinearScreenDepth(uDepthMap2);
-				  float screenDepth = getLinearScreenDepth(uDepthMap);
-				  float foamLine = clamp((screenDepth - worldDepth),0.0,1.0) ;
-				  if(foamLine < 0.001){
-				      color.rgba += 0.2;
-				  }
-				  if(isMask){
-				  	color = vec4(1.0);
-				  }
-					gl_FragColor = color;
-				}
-				`,
+  #include <common>
+  #include <fog_pars_fragment>
+  #include <packing>
+
+  varying vec2 vUV;
+  varying vec3 WorldPosition;
+  uniform sampler2D uSurfaceTexture;
+  uniform sampler2D uDepthMap;
+  uniform sampler2D uDepthMap2;
+  uniform float uTime;
+  uniform float cameraNear;
+  uniform float cameraFar;
+  uniform vec4 uScreenSize;
+  uniform bool isMask;
+  uniform bool isNight;
+  uniform vec2 resolution;
+  float readDepth (vec2 screenPosition) {
+    return unpackRGBAToDepth( texture2D( uDepthMap, screenPosition ) );
+  }
+
+  float getLinearScreenDepth(const in float depth) {
+    return perspectiveDepthToViewZ( depth, cameraNear, cameraFar );
+
+  }
+
+  void main(){
+    vec2 screenUV = gl_FragCoord.xy / resolution;
+
+    vec4 color = vec4(0.035, 0.208, 0.8,0.35);
+    vec4 foamColor = vec4(1.0, 1.0, 1.0, 0.45);
+    if (isNight == true) {color = vec4(0.015, 0.094, 0.153, 0.45);};
+    vec2 pos = vUV * 5.0;
+      pos.y -= uTime * 0.005;
+    vec4 WaterLines = texture2D(uSurfaceTexture,pos);
+    color.rgba += WaterLines.r * 0.05;
+    if (isNight == true) color.rgba += WaterLines.r * 0.001;
+    //float worldDepth = getLinearDepth(WorldPosition);
+    float worldDepth = getLinearScreenDepth( gl_FragCoord.z );
+    float screenDepth = getLinearScreenDepth( readDepth( screenUV ) );
+    float diff =  worldDepth - screenDepth;
+
+    //  vec2 displacement = texture2D( uSurfaceTexture, ( vUv * 2.0 ) - uTime * 0.05 );
+    // displacement = ( ( displacement * 2.0 ) - 1.0 ) * 1.0;
+    // diff += displacement.x;
+
+    if(isMask){
+      color = vec4(1.0);
+    }
+    gl_FragColor.rgba= mix( foamColor, color, step( 0.5, diff ) );
+    #include <tonemapping_fragment>
+    #include <encodings_fragment>
+
+    #include <fog_fragment>
+  } 
+  `,
   vertexShader: `
 				uniform float uTime;
 				varying vec2 vUV;

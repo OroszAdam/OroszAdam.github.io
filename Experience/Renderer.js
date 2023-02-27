@@ -36,10 +36,7 @@ export default class Renderer {
   }
   resize() {
     // Desktop mode
-    if (
-      window.matchMedia("(min-width: 1080px)").matches &&
-      window.height < window.width
-    ) {
+    if (window.matchMedia("(min-width: 1080px)").matches) {
       this.pixelRatioModifier = 1;
     }
     // Mobile mode
