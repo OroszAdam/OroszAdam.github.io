@@ -17,7 +17,7 @@ export default class Renderer {
   setRenderer() {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
-      antialias: false,
+      antialias: true,
       alpha: true,
     });
     this.renderer.autoClear = false;
@@ -36,15 +36,12 @@ export default class Renderer {
   }
   resize() {
     // Desktop mode
-    if (
-      window.matchMedia("(min-width: 1080px)").matches &&
-      window.height < window.width
-    ) {
+    if (window.matchMedia("(min-width: 1080px)").matches) {
       this.pixelRatioModifier = 1;
     }
     // Mobile mode
     else {
-      this.pixelRatioModifier = 0.65;
+      this.pixelRatioModifier = 0.8;
     }
     this.renderer.setSize(this.sizes.width, this.sizes.height);
     this.renderer.setPixelRatio(
