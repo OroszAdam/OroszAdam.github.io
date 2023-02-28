@@ -109,6 +109,7 @@ export default class Floor extends EventEmitter {
     });
     this.water = new THREE.Mesh(water_geometry, water_material);
     this.water.position.y = -0.2;
+    this.water.position.z = -3;
     this.water.rotation.x = -Math.PI / 2;
     this.scene.add(this.water);
   }
@@ -182,14 +183,15 @@ Floor.WaterShader = {
   void main(){
     vec2 screenUV = gl_FragCoord.xy / resolution;
 
-    vec4 color = vec4(0.035, 0.208, 0.8,0.35);
-    vec4 foamColor = vec4(1.0, 1.0, 1.0, 0.45);
-    if (isNight == true) {color = vec4(0.015, 0.094, 0.153, 0.45);};
-    vec2 pos = vUV * 5.0;
+    vec4 color = vec4(0.035, 0.258, 0.95,0.65);
+    vec4 foamColor = vec4(1.0, 1.0, 1.0, 0.55);
+    if (isNight == true) {color = vec4(0.005, 0.027, 0.053, 0.75);};
+    vec2 pos = vUV * 15.0;
       pos.y -= uTime * 0.005;
     vec4 WaterLines = texture2D(uSurfaceTexture,pos);
-    color.rgba += WaterLines.r * 0.05;
-    if (isNight == true) color.rgba += WaterLines.r * 0.001;
+    if (isNight == true) color.rgba += WaterLines.r * 0.002;
+        else color.rgba += WaterLines.r * 0.02;
+
     //float worldDepth = getLinearDepth(WorldPosition);
     float worldDepth = getLinearScreenDepth( gl_FragCoord.z );
     float screenDepth = getLinearScreenDepth( readDepth( screenUV ) );
@@ -202,7 +204,7 @@ Floor.WaterShader = {
     if(isMask){
       color = vec4(1.0);
     }
-    gl_FragColor.rgba= mix( foamColor, color, step( 0.5, diff ) );
+    gl_FragColor.rgba= mix( foamColor, color, step( diff-1.0, diff ) );
     #include <tonemapping_fragment>
     #include <encodings_fragment>
 

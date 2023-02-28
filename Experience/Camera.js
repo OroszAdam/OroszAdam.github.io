@@ -98,7 +98,6 @@ export default class Camera {
     this.orthographicCamera.top = this.sizes.frustrum / 2;
     this.orthographicCamera.bottom = -this.sizes.frustrum / 2;
     this.orthographicCamera.updateProjectionMatrix();
-    console.log(this.perspectiveCamera.aspect);
   }
 
   update() {

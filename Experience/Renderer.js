@@ -47,7 +47,6 @@ export default class Renderer {
     this.renderer.setPixelRatio(
       this.sizes.pixelRatio * this.pixelRatioModifier
     );
-    console.log(this.sizes.aspect);
   }
   update() {
     this.renderer.setViewport(0, 0, this.sizes.width, this.sizes.height);

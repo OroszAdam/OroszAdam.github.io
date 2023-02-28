@@ -160,9 +160,6 @@ body {
   background-color: var(--primary-sectionBackgroundColor);
   overflow: hidden;
 }
-.section:hover {
-  scale: 101%;
-}
 
 .left {
   margin-right: auto;
@@ -190,9 +187,13 @@ body {
   border-bottom: 2px solid var(--primary-textColor);
   padding-bottom: 150px;
 }
-.section-detail-wrapper {
+.section-detailed-wrapper {
   position: relative;
-  padding: 10% 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 0% 5%;
 }
 
 .section-heading {
@@ -211,6 +212,25 @@ body {
   background-color: var(--primary-sectionTextBackgroundColor);
   padding: 5%;
   border-radius: 20% 10% 20% 10%;
+}
+.link-buttons {
+  background-color: var(--primary-textColor);
+  width: fit-content;
+  padding: 5%;
+  margin: 5%;
+
+  border-radius: 20% 10% 20% 10%;
+  box-shadow: 5px 1px 10px 1px var(--primary-textColor);
+  border-width: 0;
+  text-transform: uppercase;
+  font-family: "Labrada", serif;
+  font-size: 22px;
+  color: var(--primary-sectionTextBackgroundColor);
+  transition: margin-left 0.25s ease-out, box-shadow 0.25s ease-out;
+}
+.link-buttons:hover {
+  margin-left: 2%;
+  box-shadow: 4px 1px 7px 1px var(--primary-textColor);
 }
 
 /* Fancy Decoration Part of Section */
