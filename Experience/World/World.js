@@ -17,9 +17,9 @@ export default class World {
 
     this.resources.on("ready", () => {
       this.environment = new Environment();
+      this.floor = new Floor();
       this.room = new Room();
       this.controls = new Controls();
-      this.floor = new Floor();
     });
 
     this.theme.on("switch", (theme) => {
@@ -43,9 +43,6 @@ export default class World {
   update() {
     if (this.room) {
       this.room.update();
-    }
-    if (this.control) {
-      this.controls.update();
     }
     if (this.floor) {
       this.floor.update();

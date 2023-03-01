@@ -114,8 +114,6 @@ export default class Floor extends EventEmitter {
     this.scene.add(this.water);
   }
   update() {
-    this.renderer.renderer.render(this.scene, this.camera.perspectiveCamera);
-
     var time = this.clock.getElapsedTime();
 
     this.water.material.uniforms.uTime.value +=

@@ -33,6 +33,7 @@ export default class Renderer {
       this.sizes.pixelRatio * this.pixelRatioModifier
     );
     this.renderer.gammaOutput = true;
+    this.renderer.setViewport(0, 0, this.sizes.width, this.sizes.height);
   }
   resize() {
     // Desktop mode
@@ -49,7 +50,6 @@ export default class Renderer {
     );
   }
   update() {
-    this.renderer.setViewport(0, 0, this.sizes.width, this.sizes.height);
     this.renderer.render(this.scene, this.camera.perspectiveCamera);
     // // Second Screen
     // this.renderer.setScissorTest(true);
@@ -66,6 +66,6 @@ export default class Renderer {
     //   this.sizes.height / 3
     // );
     // this.renderer.render(this.scene, this.camera.orthographicCamera);
-    this.renderer.setScissorTest(false);
+    // this.renderer.setScissorTest(false);
   }
 }

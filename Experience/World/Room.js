@@ -11,7 +11,7 @@ export default class Room {
     this.resources = this.experience.resources;
     this.room = this.resources.items.room;
     this.actualRoom = this.room.scene;
-
+    this.water = this.experience.world.floor.water;
     this.lerpX = {
       current: 0,
       target: 0,
@@ -30,7 +30,7 @@ export default class Room {
 
     this.setModel();
     this.setBuoyantObjects();
-    // this.onMouseMove();
+    this.onMouseMove();
     // this.setGUI();
   }
   // setGUI() {
@@ -80,7 +80,7 @@ export default class Room {
     this.rectLight.rotation.z = this.rectLight.parent.rotation.z;
 
     this.actualRoom.add(this.rectLight);
-
+    this.actualRoom.add(this.water);
     // const rectLightHelper = new RectAreaLightHelper(this.rectLight);
     // this.rectLight.add(rectLightHelper);
 
