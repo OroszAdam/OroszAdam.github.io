@@ -45,6 +45,26 @@ export default class Environment {
 
     this.ambientLight = new THREE.AmbientLight("#ffffff", 0.8);
     this.scene.add(this.ambientLight);
+
+    // var tl = GSAP.timeline({ repeat: -1, repeatDelay: 0, delay: 0 });
+    // tl.to(this.sunLight.position, 4, {
+    //   bezier: {
+    //     type: "quadratic",
+    //     values: [
+    //       /*p1*/ { x: 0, y: 0 },
+    //       { x: 200, y: 0 },
+    //       { x: 200, y: 200 },
+    //       /*p2*/ { x: 200, y: 400 },
+    //       { x: 0, y: 400 },
+    //       /*p3*/ { x: -200, y: 400 },
+    //       { x: -200, y: 200 },
+    //       /*p4*/ { x: -200, y: 0 },
+    //       { x: 0, y: 0 },
+    //     ],
+    //     autoRotate: false,
+    //   },
+    //   ease: GSAP.easeNone,
+    // });
   }
   switchTheme(theme) {
     const rootStyles = getComputedStyle(document.documentElement);
@@ -121,5 +141,7 @@ export default class Environment {
       this.sunLight.castShadow = false;
     }
   }
-  update() {}
+  update() {
+    // console.log(this.sunLight.position);
+  }
 }
