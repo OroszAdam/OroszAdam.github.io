@@ -88,12 +88,12 @@ export default class Environment {
     //   },
     //   ease: GSAP.easeNone,
     // });
-    const flow = new Flow(this.sunLight);
-    flow.updateCurve(0, curve);
-    scene.add(flow.object3D);
+    // const flow = new Flow(this.sunLight);
+    // flow.updateCurve(0, curve);
+    // scene.add(flow.object3D);
 
-    const clock = new THREE.Clock();
-    let delta;
+    // const clock = new THREE.Clock();
+    // let delta;
   }
   switchTheme(theme) {
     const rootStyles = getComputedStyle(document.documentElement);
