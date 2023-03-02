@@ -31,6 +31,29 @@ export default class Environment {
   //     this.sunLight.ambientLight = this.obj.intensity;
   //   });
   // }
+  // setPath() {
+  //   //Create a closed wavey loop
+  //   this.curve = new THREE.CatmullRomCurve3(
+  //     [
+  //       new THREE.Vector3(-10, 4, 0),
+  //       new THREE.Vector3(0, 4, 10),
+  //       new THREE.Vector3(10, 4, 0),
+  //       new THREE.Vector3(0, 4, -10),
+  //     ],
+  //     true
+  //   );
+
+  //   const points = this.curve.getPoints(50);
+  //   const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+  //   const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+
+  //   // Create the final object to add to the scene
+  //   const curveObject = new THREE.Line(geometry, material);
+
+  //   // Show curve on the scene
+  //   this.scene.add(curveObject);
+  // }
   setSunLight() {
     this.sunLight = new THREE.DirectionalLight("#ffffff", 3);
     window.matchMedia("(min-width: 1080px)").matches
@@ -47,7 +70,7 @@ export default class Environment {
     this.scene.add(this.ambientLight);
 
     // var tl = GSAP.timeline({ repeat: -1, repeatDelay: 0, delay: 0 });
-    // tl.to(this.sunLight.position, 4, {
+    // tl.to(this.sunLight.position.x, 4, {
     //   bezier: {
     //     type: "quadratic",
     //     values: [
@@ -65,6 +88,12 @@ export default class Environment {
     //   },
     //   ease: GSAP.easeNone,
     // });
+    const flow = new Flow(this.sunLight);
+    flow.updateCurve(0, curve);
+    scene.add(flow.object3D);
+
+    const clock = new THREE.Clock();
+    let delta;
   }
   switchTheme(theme) {
     const rootStyles = getComputedStyle(document.documentElement);

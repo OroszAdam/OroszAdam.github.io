@@ -117,7 +117,7 @@ export default class Floor extends EventEmitter {
     var time = this.clock.getElapsedTime();
 
     this.water.material.uniforms.uTime.value +=
-      0.03 * Math.sin(0.2 * time) + 0.01 * Math.sin(1 * time);
+      0.025 * Math.sin(0.1 * time) + 0.007 * Math.sin(0.5 * time);
     this.experience.world?.room?.buoyantObjects.forEach((obj) => {
       this.BuoyancyUpdate(obj);
     });
