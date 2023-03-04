@@ -10,14 +10,15 @@ export default class Environment {
     this.experience = new Experience();
     this.scene = this.experience.scene;
     this.resources = this.experience.resources;
-
     // this.gui = new GUI({ container: document.querySelector(".hero-main") });
     // this.obj = {
     //   colorObj: { r: 0, g: 0, b: 0 },
     //   intensity: 3,
     // };
-
+    this.clock = new THREE.Clock();
     this.setSunLight();
+    this.setSunPath();
+
     //this.setGUI();
   }
 
@@ -68,32 +69,34 @@ export default class Environment {
 
     this.ambientLight = new THREE.AmbientLight("#ffffff", 0.8);
     this.scene.add(this.ambientLight);
+    this.position = new THREE.Vector3(0, 0, 0);
 
-    // var tl = GSAP.timeline({ repeat: -1, repeatDelay: 0, delay: 0 });
-    // tl.to(this.sunLight.position.x, 4, {
-    //   bezier: {
-    //     type: "quadratic",
-    //     values: [
-    //       /*p1*/ { x: 0, y: 0 },
-    //       { x: 200, y: 0 },
-    //       { x: 200, y: 200 },
-    //       /*p2*/ { x: 200, y: 400 },
-    //       { x: 0, y: 400 },
-    //       /*p3*/ { x: -200, y: 400 },
-    //       { x: -200, y: 200 },
-    //       /*p4*/ { x: -200, y: 0 },
-    //       { x: 0, y: 0 },
-    //     ],
-    //     autoRotate: false,
-    //   },
-    //   ease: GSAP.easeNone,
-    // });
-    // const flow = new Flow(this.sunLight);
-    // flow.updateCurve(0, curve);
-    // scene.add(flow.object3D);
-
-    // const clock = new THREE.Clock();
     // let delta;
+  }
+  setSunPath() {
+    var offset = new THREE.Vector3(7, 0.5, 7);
+    //Create a closed wavey loop
+    this.curve = new THREE.CatmullRomCurve3(
+      [
+        new THREE.Vector3(0 + offset.x, 10 + offset.y, 0 + offset.z),
+        new THREE.Vector3(10 + offset.x, 0 + offset.y, -10 + offset.z),
+        new THREE.Vector3(0 + offset.x, -2 + offset.y, 0 + offset.z),
+        new THREE.Vector3(-10 + offset.x, 0 + offset.y, 10 + offset.z),
+      ],
+      true,
+      "catmullrom",
+      0.8
+    );
+    const points = this.curve.getPoints(50);
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+    const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+
+    // Create the final object to add to the scene
+    const curveObject = new THREE.Line(geometry, material);
+
+    // Show curve on the scene
+    this.scene.add(curveObject);
   }
   switchTheme(theme) {
     const rootStyles = getComputedStyle(document.documentElement);
@@ -122,7 +125,7 @@ export default class Environment {
         b: 0.39215686274509803,
       });
       GSAP.to(this.sunLight, {
-        intensity: 0.05,
+        intensity: 0.25,
       });
       GSAP.to(this.ambientLight, {
         intensity: 0.8,
@@ -172,5 +175,13 @@ export default class Environment {
   }
   update() {
     // console.log(this.sunLight.position);
+    var time = this.clock.getElapsedTime();
+    this.curve.getPointAt((time / 1000) % 1, this.position);
+
+    this.sunLight.position.set(
+      this.position.x,
+      this.position.y,
+      this.position.z
+    );
   }
 }

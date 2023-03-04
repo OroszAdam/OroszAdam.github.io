@@ -51,7 +51,8 @@ export default class Room {
       }
       // Add video to the screen:
       if (child.name === "Screen") {
-        child.material = new THREE.MeshBasicMaterial({
+        this.tvScreen = child;
+        this.tvScreen.material = new THREE.MeshBasicMaterial({
           map: this.resources.items.myself_on_screen,
         });
       }

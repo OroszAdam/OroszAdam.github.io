@@ -181,7 +181,7 @@ Floor.WaterShader = {
   void main(){
     vec2 screenUV = gl_FragCoord.xy / resolution;
 
-    vec4 color = vec4(0.035, 0.258, 0.95,0.65);
+    vec4 color = vec4(0.035, 0.258, 0.95,0.55);
     vec4 foamColor = vec4(1.0, 1.0, 1.0, 0.55);
     if (isNight == true) {color = vec4(0.005, 0.027, 0.053, 0.75);};
     vec2 pos = vUV * 15.0;
