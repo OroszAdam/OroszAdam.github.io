@@ -48,7 +48,7 @@ export default class Floor extends EventEmitter {
     this.depthTarget2.depthTexture = new THREE.DepthTexture();
     this.depthTarget2.depthTexture.type = THREE.UnsignedShortType;
     var waterLinesTexture = new THREE.TextureLoader().load(
-      "/textures/WaterTexture.png"
+      "/textures/WaterTexture_2.png"
       // "/textures/water/Water_1_M_Normal.jpg"
     );
     waterLinesTexture.wrapS = THREE.RepeatWrapping;
@@ -108,7 +108,7 @@ export default class Floor extends EventEmitter {
       depthWrite: false,
     });
     this.water = new THREE.Mesh(water_geometry, water_material);
-    this.water.position.y = -0.2;
+    this.water.position.y = -0.21;
     this.water.position.z = -3;
     this.water.rotation.x = -Math.PI / 2;
     this.scene.add(this.water);
@@ -116,8 +116,7 @@ export default class Floor extends EventEmitter {
   update() {
     var time = this.clock.getElapsedTime();
 
-    this.water.material.uniforms.uTime.value +=
-      0.025 * Math.sin(0.1 * time) + 0.007 * Math.sin(0.5 * time);
+    this.water.material.uniforms.uTime.value += 0.025 * Math.sin(0.1 * time);
     this.experience.world?.room?.buoyantObjects.forEach((obj) => {
       this.BuoyancyUpdate(obj);
     });
@@ -184,20 +183,21 @@ Floor.WaterShader = {
     vec4 color = vec4(0.035, 0.258, 0.95,0.55);
     vec4 foamColor = vec4(1.0, 1.0, 1.0, 0.55);
     if (isNight == true) {color = vec4(0.005, 0.027, 0.053, 0.75);};
-    vec2 pos = vUV * 15.0;
-      pos.y -= uTime * 0.005;
+    vec2 pos = vUV * 20.0;
+      pos.y += uTime * 0.04;
+      pos.x += uTime * 0.02;
     vec4 WaterLines = texture2D(uSurfaceTexture,pos);
     if (isNight == true) color.rgba += WaterLines.r * 0.002;
-        else color.rgba += WaterLines.r * 0.02;
+        else color.rgba += WaterLines.r * 0.09;
 
     //float worldDepth = getLinearDepth(WorldPosition);
     float worldDepth = getLinearScreenDepth( gl_FragCoord.z );
     float screenDepth = getLinearScreenDepth( readDepth( screenUV ) );
     float diff =  worldDepth - screenDepth;
 
-    //  vec2 displacement = texture2D( uSurfaceTexture, ( vUv * 2.0 ) - uTime * 0.05 );
-    // displacement = ( ( displacement * 2.0 ) - 1.0 ) * 1.0;
-    // diff += displacement.x;
+     vec4 displacement = texture2D( uSurfaceTexture, ( vUV * 2.0 ) - uTime * 0.05 );
+    displacement = ( ( displacement * 2.0 ) - 1.0 ) * 1.0;
+    diff += displacement.x;
 
     if(isMask){
       color = vec4(1.0);
@@ -215,7 +215,7 @@ Floor.WaterShader = {
 				varying vec3 WorldPosition;
 				void main() {
 					vec3 pos = position;
-					pos.z += cos(pos.x*5.0+uTime) * 0.1 * sin(pos.y * 6.0 + uTime);
+					pos.z +=  0.11 * sin(pos.y * 1.0 + uTime) + 0.07* cos(pos.x * 2.0 + uTime);
 					WorldPosition = pos;
 					vUV = uv;
 					//gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);

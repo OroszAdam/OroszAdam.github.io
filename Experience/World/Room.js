@@ -2,7 +2,6 @@ import * as THREE from "three";
 
 import Experience from "../Experience.js";
 import GSAP from "gsap";
-import GUI from "lil-gui";
 
 export default class Room {
   constructor() {
@@ -51,10 +50,52 @@ export default class Room {
       }
       // Add video to the screen:
       if (child.name === "Screen") {
+        child.scale.y = 0;
         this.tvScreen = child;
         this.tvScreen.material = new THREE.MeshBasicMaterial({
           map: this.resources.items.myself_on_screen,
         });
+        GSAP.timeline().to(child.scale, { duration: 0.2, y: 1 }, 2);
+      }
+      if (child.name === "TVFrame") {
+        child.scale.y = 0;
+        child.scale.x = 0;
+        GSAP.timeline().to(child.scale, { duration: 0.2, y: 1 }, 2);
+        GSAP.timeline().to(child.scale, { duration: 0.2, x: 1 }, 2);
+      }
+      if (child.name === "High_bar") {
+        child.scale.x = 0;
+        GSAP.timeline().to(child.scale, { duration: 0.5, x: 1 }, 1);
+      }
+      if (child.name === "Parallel_bars") {
+        child.scale.y = 0;
+        GSAP.timeline().to(child.scale, { duration: 0.5, y: 1 }, 1);
+      }
+      if (child.name === "Lemur") {
+        child.scale.y = 0;
+        child.scale.x = 0;
+        GSAP.timeline().to(child.scale, { duration: 0.5, y: 1 }, 2.5);
+        GSAP.timeline().to(child.scale, { duration: 0.5, x: 1 }, 2.5);
+      }
+      if (child.name === "Rings") {
+        child.scale.z = 0;
+        child.scale.x = 0;
+        GSAP.timeline().to(child.scale, { duration: 0.2, z: 1 }, 1.5);
+        GSAP.timeline().to(child.scale, { duration: 0.2, x: 1 }, 1.5);
+      }
+      if (child.name === "Palm_tree") {
+        child.scale.x = 0;
+        child.scale.z = 0;
+
+        GSAP.timeline().to(child.scale, { duration: 1, z: 1 }, 0.5);
+        GSAP.timeline().to(child.scale, { duration: 1, x: 1 }, 0.5);
+      }
+      if (child.name === "Sea_floor") {
+        child.scale.x = 0.5;
+        child.scale.z = 0.5;
+
+        GSAP.timeline().to(child.scale, { duration: 1, z: 1 }, 0.5);
+        GSAP.timeline().to(child.scale, { duration: 1, x: 1 }, 0.5);
       }
     });
     const width = 1.25;

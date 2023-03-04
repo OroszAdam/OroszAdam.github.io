@@ -17,7 +17,7 @@ export default class Environment {
     // };
     this.clock = new THREE.Clock();
     this.setSunLight();
-    this.setSunPath();
+    // this.setSunPath();
 
     //this.setGUI();
   }
@@ -98,6 +98,17 @@ export default class Environment {
     // Show curve on the scene
     this.scene.add(curveObject);
   }
+  updateSunPosition() {
+    // console.log(this.sunLight.position);
+    var time = this.clock.getElapsedTime();
+    this.curve.getPointAt((time / 1000) % 1, this.position);
+
+    this.sunLight.position.set(
+      this.position.x,
+      this.position.y,
+      this.position.z
+    );
+  }
   switchTheme(theme) {
     const rootStyles = getComputedStyle(document.documentElement);
     if (theme === "dark") {
@@ -125,7 +136,7 @@ export default class Environment {
         b: 0.39215686274509803,
       });
       GSAP.to(this.sunLight, {
-        intensity: 0.25,
+        intensity: 1.5,
       });
       GSAP.to(this.ambientLight, {
         intensity: 0.8,
@@ -174,14 +185,7 @@ export default class Environment {
     }
   }
   update() {
-    // console.log(this.sunLight.position);
-    var time = this.clock.getElapsedTime();
-    this.curve.getPointAt((time / 1000) % 1, this.position);
-
-    this.sunLight.position.set(
-      this.position.x,
-      this.position.y,
-      this.position.z
-    );
+    // experimental feature to move sun during running, but it looks weird, so it stays disabled as of now
+    //this.updateSunPosition();
   }
 }
