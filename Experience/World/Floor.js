@@ -108,7 +108,7 @@ export default class Floor extends EventEmitter {
       depthWrite: false,
     });
     this.water = new THREE.Mesh(water_geometry, water_material);
-    this.water.position.y = -0.21;
+    this.water.position.y = -0.22;
     this.water.position.z = -3;
     this.water.rotation.x = -Math.PI / 2;
     this.scene.add(this.water);
