@@ -136,10 +136,10 @@ export default class Room {
       this.actualRoom.children.find((x) => x.name === "duckcycle"),
       this.actualRoom.children.find((x) => x.name === "coconut_in_water"),
     ];
-  
+
     console.log(this.buoyantObjects);
   }
-    setPortal() {
+  setPortal() {
     // PortalLightMaterial
     const portalLightMaterial = new THREE.ShaderMaterial({
       vertexShader: portalVertexShader,
@@ -152,6 +152,7 @@ export default class Room {
         uColorEnd: { value: new THREE.Color(debugObject.portalColorEnd) },
       },
     });
+  }
   onMouseMove() {
     window.addEventListener("mousemove", (e) => {
       this.rotationY =
