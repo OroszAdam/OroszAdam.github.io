@@ -328,8 +328,21 @@ body {
   box-shadow: 5px 5px 10px var(--primary-textColor);
 }
 
-.hero-second {
+.hero-second-base {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
+  bottom: 3%;
+  right: 3%;
+  padding-top: 20px;
+  padding-bottom: 25px;
+  padding-left: 50px;
+  padding-right: 50px;
+  width: 500px;
+}
+
+.hero-second {
   bottom: 3%;
   right: 3%;
   width: 75wv;
@@ -340,6 +353,9 @@ body {
   background-color: var(--primary-sectionBackgroundColor);
   border-radius: 25% 10%;
   box-shadow: 5px 5px 10px var(--primary-textColor);
+}
+
+.hero-second-cat {
 }
 
 .hero-main-title {
